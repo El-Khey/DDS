@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Décrire une offre en texte libre{% endblock %}
+
+{% block content %}
+<section>
+    <p class="eyebrow">Texte → LLM → JSON → BDD</p>
+    <h1>Décrire une offre</h1>
+    <p>
+        L'appel utilise l'API compatible OpenAI d'ILaaS. Le serveur doit recevoir
+        <code>ILAAS_API_KEY</code> et <code>ILAAS_MODEL</code>.
+    </p>
+
+    <form id="texte-form">
+        <label for="description_libre">Description libre</label>
+        <textarea id="description_libre" name="description_libre" rows="9" required
+            placeholder="Je propose un appartement meublé à La Clusaz..."></textarea>
+        <button type="submit">Envoyer à ILaaS et enregistrer</button>
+    </form>
+
+    <div id="llm-resultat" class="message" hidden></div>
+    <pre id="llm-preview" class="preview" hidden></pre>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/import-texte.js') }}"></script>
+{% endblock %}

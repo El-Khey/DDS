@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Créer une facture de logement{% endblock %}
+
+{% block content %}
+<section>
+    <p class="eyebrow">Formulaire → JSON → BDD</p>
+    <h1>Créer une facture</h1>
+    <p>Le formulaire produit un JSON conforme à la structure de facture du projet.</p>
+
+    <form id="facture-form">
+        <fieldset>
+            <legend>Facture</legend>
+            <label for="numero">Numéro</label>
+            <input id="numero" name="numero" value="{{ numero_facture }}" required>
+            <label for="date">Date</label>
+            <input id="date" name="date" type="date" value="{{ date_facture }}" required>
+        </fieldset>
+
+        <fieldset>
+            <legend>Émetteur</legend>
+            <label for="emetteur_nom">Nom</label>
+            <input id="emetteur_nom" name="emetteur_nom" required>
+            <label for="emetteur_email">Adresse électronique</label>
+            <input id="emetteur_email" name="emetteur_email" type="email" required>
+            <label for="emetteur_rue">Rue</label>
+            <input id="emetteur_rue" name="emetteur_rue" required>
+            <label for="emetteur_code_postal">Code postal</label>
+            <input id="emetteur_code_postal" name="emetteur_code_postal" required>
+            <label for="emetteur_ville">Ville</label>
+            <input id="emetteur_ville" name="emetteur_ville" value="La Clusaz" required>
+        </fieldset>
+
+        <fieldset>
+            <legend>Client</legend>
+            <label for="client_nom">Nom</label>
+            <input id="client_nom" name="client_nom" required>
+            <label for="client_prenom">Prénom</label>
+            <input id="client_prenom" name="client_prenom" required>
+            <label for="client_email">Adresse électronique</label>
+            <input id="client_email" name="client_email" type="email" required>
+            <label for="client_rue">Rue</label>
+            <input id="client_rue" name="client_rue" required>
+            <label for="client_code_postal">Code postal</label>
+            <input id="client_code_postal" name="client_code_postal" required>
+            <label for="client_ville">Ville</label>
+            <input id="client_ville" name="client_ville" required>
+        </fieldset>
+
+        <fieldset>
+            <legend>Offre de logement</legend>
+            <label for="id_logement">Référence du logement</label>
+            <input id="id_logement" name="id_logement" value="{{ reference_logement }}" required>
+            <label for="type_bien">Type de bien</label>
+            <select id="type_bien" name="type_bien" required>
+                <option value="chambre">Chambre</option>
+                <option value="appartement">Appartement</option>
+                <option value="maison">Maison</option>
+            </select>
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="4" required></textarea>
+            <label for="meuble">Meublé</label>
+            <select id="meuble" name="meuble" required>
+                <option value="oui">Oui</option>
+                <option value="non">Non</option>
+            </select>
+            <label for="logement_rue">Rue</label>
+            <input id="logement_rue" name="logement_rue" required>
+            <label for="logement_code_postal">Code postal</label>
+            <input id="logement_code_postal" name="logement_code_postal" value="74220" required>
+            <label for="logement_ville">Ville</label>
+            <input id="logement_ville" name="logement_ville" value="La Clusaz" required>
+            <label for="loyer_mensuel">Loyer mensuel (€)</label>
+            <input id="loyer_mensuel" name="loyer_mensuel" type="number" min="0" step="0.01" required>
+            <label for="charges">Charges (€)</label>
+            <input id="charges" name="charges" type="number" min="0" step="0.01" value="0" required>
+            <label for="depot_garantie">Dépôt de garantie (€)</label>
+            <input id="depot_garantie" name="depot_garantie" type="number" min="0" step="0.01" value="0" required>
+            <label for="frais_d_agence">Frais d'agence (€)</label>
+            <input id="frais_d_agence" name="frais_d_agence" type="number" min="0" step="0.01" value="0" required>
+        </fieldset>
+
+        <button type="submit">Enregistrer la facture</button>
+    </form>
+
+    <div id="resultat" class="message" hidden></div>
+    <pre id="json-preview" class="preview" hidden></pre>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/creer-facture.js') }}"></script>
+{% endblock %}

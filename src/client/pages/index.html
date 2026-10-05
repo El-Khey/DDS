@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Factures de logement{% endblock %}
+
+{% block content %}
+<section class="intro">
+    <p class="eyebrow">Démonstration DDS</p>
+    <h1>Factures d'offres de logement</h1>
+    <p>Création d'une facture en JSON, stockage dans SQLite et export en XML/HTML.</p>
+    <a class="button" href="{{ url_for('nouvelle_facture') }}">Créer une facture</a>
+</section>
+
+<section>
+    <h2>Factures enregistrées</h2>
+
+    {% if factures %}
+        <div class="cards">
+            {% for facture in factures %}
+                <article class="card">
+                    <h3>Facture {{ facture["numero"] }}</h3>
+                    <p>Émise par {{ facture["emetteur_nom"] }}</p>
+                    <p>Client : {{ facture["client_prenom"] }} {{ facture["client_nom"] }}</p>
+                    <p>{{ facture["date_facture"] }} · {{ facture["total"] }} €</p>
+                    <p class="card-links">
+                        <a href="{{ url_for('afficher_facture_html', numero=facture['numero']) }}">Voir la facture</a>
+                        <a href="{{ url_for('exporter_facture_xml', numero=facture['numero']) }}">XML</a>
+                        <a href="{{ url_for('lire_facture_api', numero=facture['numero']) }}">JSON</a>
+                    </p>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="empty">Aucune facture n'est encore enregistrée.</p>
+    {% endif %}
+</section>
+{% endblock %}

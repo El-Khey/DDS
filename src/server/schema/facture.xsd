@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:simpleType name="usageTelephone">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="personnel"/>
+            <xs:enumeration value="professionnel"/>
+            <xs:enumeration value="mobile"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="adresseType">
+        <xs:sequence>
+            <xs:element name="rue" type="xs:string"/>
+            <xs:element name="code_postal" type="xs:string"/>
+            <xs:element name="ville" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="telephoneType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="usage" type="usageTelephone"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:element name="facture">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="emetteur">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="nom" type="xs:string"/>
+                            <xs:element name="adresse" type="adresseType"/>
+                            <xs:element name="email" type="xs:string"/>
+                            <xs:element name="tel" type="telephoneType" minOccurs="0" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="client">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="nom" type="xs:string"/>
+                            <xs:element name="prenom" type="xs:string"/>
+                            <xs:element name="adresse" type="adresseType"/>
+                            <xs:element name="email" type="xs:string"/>
+                            <xs:element name="tel" type="telephoneType" minOccurs="0" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="offre_logement">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="description" type="xs:string"/>
+                            <xs:element name="type_bien" type="xs:string"/>
+                            <xs:element name="logement" minOccurs="1" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="adresse" type="adresseType"/>
+                                        <xs:element name="loyer_mensuel" type="xs:decimal"/>
+                                        <xs:element name="charges" type="xs:decimal"/>
+                                        <xs:element name="depot_garantie" type="xs:decimal"/>
+                                        <xs:element name="frais_d_agence" type="xs:decimal" minOccurs="0"/>
+                                    </xs:sequence>
+                                    <xs:attribute name="idLogement" type="xs:ID" use="required"/>
+                                    <xs:attribute name="meuble" use="optional">
+                                        <xs:simpleType>
+                                            <xs:restriction base="xs:string">
+                                                <xs:enumeration value="oui"/>
+                                                <xs:enumeration value="non"/>
+                                            </xs:restriction>
+                                        </xs:simpleType>
+                                    </xs:attribute>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="details_paiement">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="ligne_facture" minOccurs="1" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="libelle" type="xs:string"/>
+                                        <xs:element name="montant" type="xs:decimal"/>
+                                    </xs:sequence>
+                                    <xs:attribute name="refLogement" type="xs:IDREF" use="required"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="total">
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:decimal">
+                                <xs:attribute name="devise" type="xs:string"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="numero" type="xs:string" use="required"/>
+            <xs:attribute name="date" type="xs:date" use="required"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

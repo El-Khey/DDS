@@ -1,0 +1,67 @@
+{
+    "facture": {
+        "@numero": "FAC-001",
+        "@date": "2026-10-05",
+        "emetteur": {
+            "nom": "Agence des Aravis",
+            "adresse": {
+                "rue": "1 place de l'Église",
+                "code_postal": "74220",
+                "ville": "La Clusaz"
+            },
+            "email": "contact@example.fr"
+        },
+        "client": {
+            "nom": "Martin",
+            "prenom": "Élodie",
+            "adresse": {
+                "rue": "10 rue de la République",
+                "code_postal": "69002",
+                "ville": "Lyon"
+            },
+            "email": "elodie.martin@example.fr"
+        },
+        "offre_logement": {
+            "description": "Appartement meublé proposé comme refuge temporaire.",
+            "type_bien": "appartement",
+            "logement": [
+                {
+                    "@idLogement": "LOG-001",
+                    "@meuble": "oui",
+                    "adresse": {
+                        "rue": "20 route des Aravis",
+                        "code_postal": "74220",
+                        "ville": "La Clusaz"
+                    },
+                    "loyer_mensuel": 600,
+                    "charges": 50,
+                    "depot_garantie": 200,
+                    "frais_d_agence": 0
+                }
+            ]
+        },
+        "details_paiement": {
+            "ligne_facture": [
+                {
+                    "@refLogement": "LOG-001",
+                    "libelle": "Loyer mensuel",
+                    "montant": 600
+                },
+                {
+                    "@refLogement": "LOG-001",
+                    "libelle": "Charges",
+                    "montant": 50
+                },
+                {
+                    "@refLogement": "LOG-001",
+                    "libelle": "Dépôt de garantie",
+                    "montant": 200
+                }
+            ]
+        },
+        "total": {
+            "@devise": "EUR",
+            "#text": 850
+        }
+    }
+}

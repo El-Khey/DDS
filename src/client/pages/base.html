@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Factures de logement{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <a class="brand" href="{{ url_for('index') }}">Factures logement</a>
+        <nav>
+            <a href="{{ url_for('index') }}">Factures</a>
+            <a href="{{ url_for('nouvelle_facture') }}">Formulaire</a>
+            <a href="{{ url_for('import_texte') }}">Texte libre</a>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

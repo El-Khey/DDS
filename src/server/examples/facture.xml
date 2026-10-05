@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../xslt/facture.xsl"?>
+<facture numero="FAC-001" date="2026-10-05">
+    <emetteur>
+        <nom>Agence des Aravis</nom>
+        <adresse>
+            <rue>1 place de l'Église</rue>
+            <code_postal>74220</code_postal>
+            <ville>La Clusaz</ville>
+        </adresse>
+        <email>contact@example.fr</email>
+    </emetteur>
+    <client>
+        <nom>Martin</nom>
+        <prenom>Élodie</prenom>
+        <adresse>
+            <rue>10 rue de la République</rue>
+            <code_postal>69002</code_postal>
+            <ville>Lyon</ville>
+        </adresse>
+        <email>elodie.martin@example.fr</email>
+    </client>
+    <offre_logement>
+        <description>Appartement meublé proposé comme refuge temporaire.</description>
+        <type_bien>appartement</type_bien>
+        <logement idLogement="LOG-001" meuble="oui">
+            <adresse>
+                <rue>20 route des Aravis</rue>
+                <code_postal>74220</code_postal>
+                <ville>La Clusaz</ville>
+            </adresse>
+            <loyer_mensuel>600</loyer_mensuel>
+            <charges>50</charges>
+            <depot_garantie>200</depot_garantie>
+            <frais_d_agence>0</frais_d_agence>
+        </logement>
+    </offre_logement>
+    <details_paiement>
+        <ligne_facture refLogement="LOG-001">
+            <libelle>Loyer mensuel</libelle>
+            <montant>600</montant>
+        </ligne_facture>
+        <ligne_facture refLogement="LOG-001">
+            <libelle>Charges</libelle>
+            <montant>50</montant>
+        </ligne_facture>
+        <ligne_facture refLogement="LOG-001">
+            <libelle>Dépôt de garantie</libelle>
+            <montant>200</montant>
+        </ligne_facture>
+    </details_paiement>
+    <total devise="EUR">850</total>
+</facture>

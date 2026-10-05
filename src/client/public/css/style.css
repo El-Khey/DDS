@@ -1,0 +1,164 @@
+:root {
+    color-scheme: light;
+    font-family: system-ui, sans-serif;
+    line-height: 1.5;
+    color: #17312d;
+    background: #f4f7f5;
+}
+
+body {
+    margin: 0;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    padding: 1rem max(1rem, calc((100% - 960px) / 2));
+    background: #ffffff;
+    border-bottom: 1px solid #dce5e1;
+}
+
+header a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.brand {
+    font-weight: 750;
+}
+
+nav {
+    display: flex;
+    gap: 1rem;
+}
+
+main {
+    max-width: 960px;
+    margin: auto;
+    padding: 3rem 1rem;
+}
+
+.intro {
+    margin-bottom: 3rem;
+}
+
+.eyebrow {
+    margin-bottom: 0;
+    color: #39766c;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+h1 {
+    margin-top: 0.25rem;
+    font-size: clamp(2rem, 6vw, 3.8rem);
+    line-height: 1.05;
+}
+
+.button,
+button {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    border: 0;
+    border-radius: 0.4rem;
+    color: white;
+    background: #176b5b;
+    font: inherit;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+}
+
+.card,
+.empty,
+form,
+.message {
+    padding: 1.25rem;
+    border: 1px solid #dce5e1;
+    border-radius: 0.6rem;
+    background: white;
+}
+
+.card-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+
+.message {
+    max-width: 640px;
+    margin-top: 1rem;
+}
+
+.message.error {
+    color: #8a1c1c;
+    border-color: #e1a0a0;
+    background: #fff2f2;
+}
+
+.message.success {
+    color: #145448;
+    border-color: #91c8bd;
+    background: #eefaf7;
+}
+
+.message a {
+    margin-right: 1rem;
+}
+
+form {
+    max-width: 640px;
+}
+
+fieldset {
+    display: grid;
+    gap: 0.5rem;
+    margin: 0 0 1.5rem;
+    padding: 0;
+    border: 0;
+}
+
+legend {
+    margin-bottom: 0.75rem;
+    font-size: 1.2rem;
+    font-weight: 750;
+}
+
+input,
+select,
+textarea {
+    box-sizing: border-box;
+    width: 100%;
+    margin-bottom: 0.75rem;
+    padding: 0.7rem;
+    border: 1px solid #aabbb5;
+    border-radius: 0.35rem;
+    font: inherit;
+}
+
+.preview {
+    overflow-x: auto;
+    max-width: 640px;
+    padding: 1rem;
+    color: #eaf7f3;
+    background: #17312d;
+    border-radius: 0.5rem;
+}
+
+@media (max-width: 600px) {
+    header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
