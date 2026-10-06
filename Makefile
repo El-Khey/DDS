@@ -14,6 +14,8 @@ help:
 	@echo "  make run      Lance l'application sur http://127.0.0.1:5000"
 	@echo "  make dev      Lance l'application en mode debug"
 	@echo "  make clean    Supprime uniquement les caches générés"
+	@echo "  export ILAAS_API_KEY=\"clé_api_du_prof\""
+	@echo "  puis verifier avec: @echo \"\$$ILAAS_API_KEY\""
 
 $(VENV_PYTHON):
 	$(PYTHON) -m venv $(VENV)

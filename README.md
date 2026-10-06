@@ -18,6 +18,7 @@ Texte libre → ILaaS → JSON → SQLite
 
 ```bash
 make install
+export ILAAS_API_KEY="clé_api_du_prof"
 make run
 ```
 
@@ -90,7 +91,6 @@ La partie formulaire fonctionne sans clé. Pour utiliser la page **Texte libre**
 
 ```bash
 export ILAAS_API_KEY="cle-fournie-par-le-professeur"
-export ILAAS_MODEL="nom-du-modele"
 make run
 ```
 
