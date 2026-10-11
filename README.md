@@ -37,6 +37,7 @@ make dev
 | `make install` | Crée `.venv` et installe les dépendances |
 | `make run` | Lance l'application |
 | `make dev` | Lance l'application en mode debug |
+| `make drop` | Vide les tables de la base SQLite |
 | `make clean` | Supprime les caches Python, sans toucher à la BDD |
 | `make help` | Affiche les commandes disponibles |
 
@@ -59,6 +60,15 @@ Le serveur vérifie le JSON, les références entre les données et le montant t
 ## Organisation
 
 ```text
+docs/                           # documentation du projet
+├── README.md                   # index de la documentation
+├── presentation.pptx           # diaporama de présentation
+├── presentation-gio.pdf        # autre support de présentation
+├── choix-de-la-ville.md         # contexte initial du projet
+├── sujet/                       # consignes et documents de rendu
+├── schemas/                     # schémas et illustrations complémentaires
+└── cours/                       # supports fournis en cours
+
 src/
 ├── client/                     # ce qui est affiché dans le navigateur
 │   ├── pages/                  # pages HTML
@@ -84,6 +94,8 @@ src/
     └── instance/
         └── refuge_climatique.sqlite
 ```
+
+Le détail des documents disponibles se trouve dans [`docs/README.md`](docs/README.md).
 
 ## ILaaS
 

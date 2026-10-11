@@ -3,5 +3,9 @@ __pycache__/
 .venv/
 venv/
 .env
+instance/
 src/server/instance/*.sqlite
 src/server/instance/*.db
+src/server/instance/*.sqlite-journal
+src/server/instance/*.sqlite-shm
+src/server/instance/*.sqlite-wal

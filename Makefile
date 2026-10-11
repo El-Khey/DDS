@@ -37,6 +37,6 @@ drop:
 	sqlite3 $(DB) < $(DELETE_SQL)
 
 clean:
-	find src -type f -name '*.py[co]' -delete 2>/dev/null || true
-	find src -type d -name '__pycache__' -empty -delete 2>/dev/null || true
+	find . -type f -name '*.py[co]' -not -path './$(VENV)/*' -delete
+	find . -type d -name '__pycache__' -not -path './$(VENV)/*' -empty -delete
 	rm -rf .pytest_cache
