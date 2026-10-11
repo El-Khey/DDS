@@ -97,10 +97,15 @@ def inserer_facture(db, payload):
             id_adresse_emetteur = _inserer_adresse(db, emetteur["adresse"])
             curseur = db.execute(
                 """
-                INSERT INTO emetteur (id_adresse, nom, email)
-                VALUES (?, ?, ?)
+                INSERT INTO emetteur (id_adresse, nom, prenom, email)
+                VALUES (?, ?, ?, ?)
                 """,
-                (id_adresse_emetteur, emetteur["nom"], emetteur["email"]),
+                (
+                    id_adresse_emetteur,
+                    emetteur["nom"],
+                    emetteur["prenom"],
+                    emetteur["email"],
+                ),
             )
             id_emetteur = curseur.lastrowid
             _inserer_telephones(db, emetteur.get("tel"), id_emetteur=id_emetteur)
@@ -198,6 +203,7 @@ def lire_facture(db, numero):
             facture.date_facture,
             emetteur.id AS emetteur_id,
             emetteur.nom AS emetteur_nom,
+            emetteur.prenom AS emetteur_prenom,
             emetteur.email AS emetteur_email,
             adresse_emetteur.rue AS emetteur_rue,
             adresse_emetteur.code_postal AS emetteur_code_postal,
@@ -257,6 +263,7 @@ def lire_facture(db, numero):
 
     emetteur = {
         "nom": entete["emetteur_nom"],
+        "prenom": entete["emetteur_prenom"],
         "adresse": _adresse_depuis_ligne(entete, "emetteur"),
         "email": entete["emetteur_email"],
     }
@@ -318,6 +325,99 @@ def lire_facture(db, numero):
             },
         }
     }
+
+
+def _supprimer_adresse_si_inutilisee(db, identifiant):
+    db.execute(
+        """
+        DELETE FROM adresse
+        WHERE id = ?
+          AND NOT EXISTS (SELECT 1 FROM emetteur WHERE id_adresse = adresse.id)
+          AND NOT EXISTS (SELECT 1 FROM client WHERE id_adresse = adresse.id)
+          AND NOT EXISTS (SELECT 1 FROM logement WHERE id_adresse = adresse.id)
+        """,
+        (identifiant,),
+    )
+
+
+def supprimer_facture(db, numero):
+    facture = db.execute(
+        """
+        SELECT
+            facture.id_emetteur,
+            facture.id_client,
+            emetteur.id_adresse AS adresse_emetteur,
+            client.id_adresse AS adresse_client
+        FROM facture
+        JOIN emetteur ON emetteur.id = facture.id_emetteur
+        JOIN client ON client.id = facture.id_client
+        WHERE facture.numero = ?
+        """,
+        (numero,),
+    ).fetchone()
+
+    if facture is None:
+        return False
+
+    logements = db.execute(
+        """
+        SELECT DISTINCT logement.id, logement.id_adresse
+        FROM logement
+        JOIN ligne_facture ON ligne_facture.id_logement = logement.id
+        WHERE ligne_facture.numero_facture = ?
+        """,
+        (numero,),
+    ).fetchall()
+
+    with db:
+        db.execute("DELETE FROM ligne_facture WHERE numero_facture = ?", (numero,))
+        db.execute("DELETE FROM facture WHERE numero = ?", (numero,))
+
+        for logement in logements:
+            suppression = db.execute(
+                """
+                DELETE FROM logement
+                WHERE id = ?
+                  AND NOT EXISTS (
+                      SELECT 1 FROM ligne_facture WHERE id_logement = logement.id
+                  )
+                """,
+                (logement["id"],),
+            )
+            if suppression.rowcount:
+                _supprimer_adresse_si_inutilisee(db, logement["id_adresse"])
+
+        if not db.execute(
+            "SELECT 1 FROM facture WHERE id_emetteur = ?",
+            (facture["id_emetteur"],),
+        ).fetchone():
+            db.execute("DELETE FROM tel WHERE id_emetteur = ?", (facture["id_emetteur"],))
+            db.execute("DELETE FROM emetteur WHERE id = ?", (facture["id_emetteur"],))
+            _supprimer_adresse_si_inutilisee(db, facture["adresse_emetteur"])
+
+        if not db.execute(
+            "SELECT 1 FROM facture WHERE id_client = ?",
+            (facture["id_client"],),
+        ).fetchone():
+            db.execute("DELETE FROM tel WHERE id_client = ?", (facture["id_client"],))
+            db.execute("DELETE FROM client WHERE id = ?", (facture["id_client"],))
+            _supprimer_adresse_si_inutilisee(db, facture["adresse_client"])
+
+    return True
+
+
+def supprimer_toutes_factures(db):
+    nombre = db.execute("SELECT COUNT(*) FROM facture").fetchone()[0]
+    with db:
+        db.execute("DELETE FROM tel")
+        db.execute("DELETE FROM ligne_facture")
+        db.execute("DELETE FROM facture")
+        db.execute("DELETE FROM logement")
+        db.execute("DELETE FROM client")
+        db.execute("DELETE FROM emetteur")
+        db.execute("DELETE FROM adresse")
+        db.execute("DELETE FROM sqlite_sequence")
+    return nombre
 
 
 def _remplir_element(element, valeur):

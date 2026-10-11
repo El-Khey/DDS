@@ -2,7 +2,8 @@
 <?xml-stylesheet type="text/xsl" href="../xslt/facture.xsl"?>
 <facture numero="FAC-001" date="2026-10-05">
     <emetteur>
-        <nom>Agence des Aravis</nom>
+        <nom>Bernard</nom>
+        <prenom>Camille</prenom>
         <adresse>
             <rue>1 place de l'Église</rue>
             <code_postal>74220</code_postal>

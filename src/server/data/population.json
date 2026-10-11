@@ -1,0 +1,54 @@
+{
+    "prenoms": [
+        "Léa", "Hugo", "Chloé", "Lucas", "Emma", "Nathan", "Inès", "Adam",
+        "Jade", "Louis", "Alice", "Gabriel", "Lina", "Arthur", "Zoé", "Noah",
+        "Louise", "Jules", "Manon", "Rayan"
+    ],
+    "noms": [
+        "Dupont", "Martin", "Bernard", "Petit", "Robert", "Richard", "Durand",
+        "Moreau", "Simon", "Laurent", "Lefebvre", "Michel", "Garcia", "David",
+        "Bertrand", "Roux", "Vincent", "Fournier", "Morel", "Girard"
+    ],
+    "villes": [
+        {"nom": "La Clusaz", "code_postal": "74220"},
+        {"nom": "Lyon", "code_postal": "69002"},
+        {"nom": "Annecy", "code_postal": "74000"},
+        {"nom": "Annemasse", "code_postal": "74100"},
+        {"nom": "Grenoble", "code_postal": "38000"},
+        {"nom": "Chambéry", "code_postal": "73000"},
+        {"nom": "Saint-Étienne", "code_postal": "42000"},
+        {"nom": "Bourg-en-Bresse", "code_postal": "01000"},
+        {"nom": "Genève", "code_postal": "1204"},
+        {"nom": "Thonon-les-Bains", "code_postal": "74200"},
+        {"nom": "Aix-les-Bains", "code_postal": "73100"}
+    ],
+    "voies": [
+        "rue de la République", "avenue du Léman", "rue du Commerce",
+        "cours Jean Jaurès", "rue des Écoles", "avenue de Genève",
+        "chemin des Sources", "boulevard des Alpes", "route des Aravis",
+        "rue du Centre", "chemin du Bossonnet", "route du Col"
+    ],
+    "types_logement": [
+        {
+            "nom": "chambre",
+            "descriptions": [
+                "Chambre calme et fraîche proche du centre-ville.",
+                "Chambre meublée adaptée à un séjour pendant une forte chaleur."
+            ]
+        },
+        {
+            "nom": "appartement",
+            "descriptions": [
+                "Appartement ventilé adapté aux périodes de forte chaleur.",
+                "Appartement lumineux disposant d'une pièce naturellement fraîche."
+            ]
+        },
+        {
+            "nom": "maison",
+            "descriptions": [
+                "Maison fraîche proposée comme refuge climatique temporaire.",
+                "Maison familiale au calme avec plusieurs espaces ombragés."
+            ]
+        }
+    ]
+}

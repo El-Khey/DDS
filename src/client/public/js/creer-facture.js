@@ -26,6 +26,7 @@ function construireFacture(data) {
             "@date": data.get("date"),
             emetteur: {
                 nom: data.get("emetteur_nom"),
+                prenom: data.get("emetteur_prenom"),
                 adresse: {
                     rue: data.get("emetteur_rue"),
                     code_postal: data.get("emetteur_code_postal"),

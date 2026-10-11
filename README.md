@@ -37,7 +37,8 @@ make dev
 | `make install` | Crée `.venv` et installe les dépendances |
 | `make run` | Lance l'application |
 | `make dev` | Lance l'application en mode debug |
-| `make drop` | Vide les tables de la base SQLite |
+| `make populate COUNT=100` | Génère le nombre demandé de factures |
+| `make drop` | Supprime les tables de la base SQLite |
 | `make clean` | Supprime les caches Python, sans toucher à la BDD |
 | `make help` | Affiche les commandes disponibles |
 
@@ -46,6 +47,17 @@ La base SQLite est créée automatiquement dans :
 ```text
 src/server/instance/refuge_climatique.sqlite
 ```
+
+Pour charger un jeu de données complet et reproductible :
+
+```bash
+make populate COUNT=100
+```
+
+Cette commande remplace les données présentes par le nombre demandé de
+factures valides. Les noms, prénoms, adresses, prix, charges et dates sont
+combinés aléatoirement à partir des listes de `data/population.json`. Chaque
+facture passe par la validation et l’insertion utilisées par l’application.
 
 ## Utilisation
 
@@ -81,6 +93,9 @@ src/
     ├── database.py             # connexion SQLite
     ├── factures.py             # validation, insertion et export
     ├── ilaas.py                # appel au LLM
+    ├── populate.py             # génération et insertion des données
+    ├── data/
+    │   └── population.json     # listes utilisées pour le peuplement
     ├── schema/
     │   ├── database.sql        # création des tables
     │   ├── database.drawio     # diagramme BDD

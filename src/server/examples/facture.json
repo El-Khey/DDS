@@ -3,7 +3,8 @@
         "@numero": "FAC-001",
         "@date": "2026-10-05",
         "emetteur": {
-            "nom": "Agence des Aravis",
+            "nom": "Bernard",
+            "prenom": "Camille",
             "adresse": {
                 "rue": "1 place de l'Église",
                 "code_postal": "74220",

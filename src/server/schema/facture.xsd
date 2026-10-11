@@ -31,6 +31,7 @@
                     <xs:complexType>
                         <xs:sequence>
                             <xs:element name="nom" type="xs:string"/>
+                            <xs:element name="prenom" type="xs:string"/>
                             <xs:element name="adresse" type="adresseType"/>
                             <xs:element name="email" type="xs:string"/>
                             <xs:element name="tel" type="telephoneType" minOccurs="0" maxOccurs="unbounded"/>

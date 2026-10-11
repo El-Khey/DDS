@@ -58,6 +58,21 @@ h1 {
     line-height: 1.05;
 }
 
+.count-badge {
+    display: inline-flex;
+    min-width: 1.6rem;
+    min-height: 1.6rem;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0.35rem;
+    padding: 0 0.45rem;
+    border-radius: 999px;
+    color: #176b5b;
+    background: #dcefe9;
+    font-size: 0.85rem;
+    vertical-align: middle;
+}
+
 .button,
 button {
     display: inline-block;
@@ -71,6 +86,34 @@ button {
     font-weight: 700;
     text-decoration: none;
     cursor: pointer;
+}
+
+.page-actions,
+.card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.danger,
+.delete-invoice {
+    background: #a02f2f;
+}
+
+.card-actions a {
+    color: #176b5b;
+}
+
+.card-actions button {
+    margin: 0 0 0 auto;
+    padding: 0.45rem 0.7rem;
+    font-size: 0.9rem;
+}
+
+button:disabled {
+    cursor: wait;
+    opacity: 0.65;
 }
 
 .cards {
@@ -87,12 +130,6 @@ form,
     border: 1px solid #dce5e1;
     border-radius: 0.6rem;
     background: white;
-}
-
-.card-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.8rem;
 }
 
 .message {

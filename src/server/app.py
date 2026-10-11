@@ -11,6 +11,8 @@ from src.server.factures import (
     facture_vers_xml,
     inserer_facture,
     lire_facture,
+    supprimer_facture,
+    supprimer_toutes_factures,
 )
 from src.server.ilaas import ErreurIlaas, IlaasNonConfigure, description_vers_facture
 
@@ -47,6 +49,7 @@ def create_app(test_config=None):
                 facture.numero,
                 facture.date_facture,
                 emetteur.nom AS emetteur_nom,
+                emetteur.prenom AS emetteur_prenom,
                 client.nom AS client_nom,
                 client.prenom AS client_prenom,
                 COALESCE(SUM(ligne_facture.montant), 0) AS total
@@ -122,6 +125,17 @@ def create_app(test_config=None):
         if payload is None:
             abort(404)
         return jsonify(payload)
+
+    @app.delete("/api/factures/<string:numero>")
+    def supprimer_facture_api(numero):
+        if not supprimer_facture(get_db(), numero):
+            return jsonify(erreur="Cette facture n'existe pas."), 404
+        return jsonify(message="Facture supprimée.", numero=numero)
+
+    @app.delete("/api/factures")
+    def supprimer_toutes_factures_api():
+        nombre = supprimer_toutes_factures(get_db())
+        return jsonify(message=f"{nombre} facture(s) supprimée(s).", nombre=nombre)
 
     @app.get("/factures/<string:numero>.xml")
     def exporter_facture_xml(numero):

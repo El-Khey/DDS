@@ -46,7 +46,11 @@
                     <section class="parties" aria-label="Émetteur et client">
                         <article class="party-card">
                             <p class="section-label">Émetteur</p>
-                            <h2><xsl:value-of select="emetteur/nom"/></h2>
+                            <h2>
+                                <xsl:value-of select="emetteur/prenom"/>
+                                <xsl:text> </xsl:text>
+                                <xsl:value-of select="emetteur/nom"/>
+                            </h2>
                             <address>
                                 <xsl:value-of select="emetteur/adresse/rue"/><br/>
                                 <xsl:value-of select="emetteur/adresse/code_postal"/>
