@@ -36,7 +36,7 @@ dev: install
 	$(VENV_FLASK) --app src.server.app run --debug
 
 populate: install
-	$(VENV_PYTHON) -m src.server.populate --count $(COUNT)
+	$(VENV_PYTHON) -m src.server.scripts.populate --count $(COUNT)
 
 drop:
 	sqlite3 $(DB) < $(DELETE_SQL)

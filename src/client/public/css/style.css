@@ -58,21 +58,6 @@ h1 {
     line-height: 1.05;
 }
 
-.count-badge {
-    display: inline-flex;
-    min-width: 1.6rem;
-    min-height: 1.6rem;
-    align-items: center;
-    justify-content: center;
-    margin-left: 0.35rem;
-    padding: 0 0.45rem;
-    border-radius: 999px;
-    color: #176b5b;
-    background: #dcefe9;
-    font-size: 0.85rem;
-    vertical-align: middle;
-}
-
 .button,
 button {
     display: inline-block;

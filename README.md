@@ -89,11 +89,21 @@ src/
 │       └── js/                 # code exécuté dans le navigateur
 │
 └── server/                     # backend Flask
-    ├── app.py                  # routes HTTP
-    ├── database.py             # connexion SQLite
-    ├── factures.py             # validation, insertion et export
-    ├── ilaas.py                # appel au LLM
-    ├── populate.py             # génération et insertion des données
+    ├── app.py                  # création de l'application
+    ├── routes/
+    │   ├── pages.py            # pages HTML et exports
+    │   └── api.py              # routes JSON de l'API
+    ├── database/
+    │   ├── connexion.py        # connexion et initialisation SQLite
+    │   ├── factures.py         # lecture des factures
+    │   ├── insertion.py        # insertion d'une facture
+    │   └── suppression.py      # suppression des factures
+    ├── services/
+    │   ├── validation.py       # contrôles JSON et métier
+    │   ├── documents.py        # génération XML et HTML
+    │   └── ilaas.py            # appel au LLM
+    ├── scripts/
+    │   └── populate.py         # génération et insertion des données
     ├── data/
     │   └── population.json     # listes utilisées pour le peuplement
     ├── schema/

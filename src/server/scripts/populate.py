@@ -6,18 +6,16 @@ import unicodedata
 from datetime import date, timedelta
 from pathlib import Path
 
-from src.server.database import migrer_db
-from src.server.factures import (
-    inserer_facture,
-    supprimer_toutes_factures,
-    valider_facture,
-)
+from src.server.database.connexion import migrer_db
+from src.server.database.insertion import inserer_facture
+from src.server.database.suppression import supprimer_toutes_factures
+from src.server.services.validation import valider_facture
 
 
-BASE_DIR = Path(__file__).resolve().parent
-DATABASE_PATH = BASE_DIR / "instance" / "refuge_climatique.sqlite"
-SCHEMA_PATH = BASE_DIR / "schema" / "database.sql"
-DATA_PATH = BASE_DIR / "data" / "population.json"
+SERVER_DIR = Path(__file__).resolve().parents[1]
+DATABASE_PATH = SERVER_DIR / "instance" / "refuge_climatique.sqlite"
+SCHEMA_PATH = SERVER_DIR / "schema" / "database.sql"
+DATA_PATH = SERVER_DIR / "data" / "population.json"
 
 
 def entier_positif(valeur):
@@ -75,17 +73,12 @@ def generer_facture(index, donnees):
     charges = random.randint(0, 120)
     depot = random.randint(300, 1500)
     frais = random.choice([0, random.randint(80, 250)])
-
     montants = {
         "Loyer mensuel": loyer,
         "Charges": charges,
         "Dépôt de garantie": depot,
         "Frais d'agence": frais,
     }
-    lignes = [
-        {"@refLogement": reference, "libelle": libelle, "montant": montant}
-        for libelle, montant in montants.items()
-    ]
 
     return {
         "facture": {
@@ -110,7 +103,16 @@ def generer_facture(index, donnees):
                     }
                 ],
             },
-            "details_paiement": {"ligne_facture": lignes},
+            "details_paiement": {
+                "ligne_facture": [
+                    {
+                        "@refLogement": reference,
+                        "libelle": libelle,
+                        "montant": montant,
+                    }
+                    for libelle, montant in montants.items()
+                ]
+            },
             "total": {"@devise": "EUR", "#text": sum(montants.values())},
         }
     }
@@ -119,7 +121,6 @@ def generer_facture(index, donnees):
 def peupler(nombre):
     donnees = json.loads(DATA_PATH.read_text(encoding="utf-8"))
     factures = [generer_facture(index, donnees) for index in range(1, nombre + 1)]
-
     for facture in factures:
         valider_facture(facture)
 
@@ -143,7 +144,9 @@ def peupler(nombre):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Peuple la base avec des factures aléatoires.")
+    parser = argparse.ArgumentParser(
+        description="Peuple la base avec des factures aléatoires."
+    )
     parser.add_argument("--count", type=entier_positif, default=100)
     arguments = parser.parse_args()
     peupler(arguments.count)
