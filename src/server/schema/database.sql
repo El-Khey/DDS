@@ -68,3 +68,15 @@ CREATE TABLE IF NOT EXISTS tel (
         OR (id_emetteur IS NULL AND id_client IS NOT NULL)
     )
 );
+
+CREATE INDEX IF NOT EXISTS idx_ligne_facture_numero
+    ON ligne_facture(numero_facture);
+
+CREATE INDEX IF NOT EXISTS idx_ligne_facture_logement
+    ON ligne_facture(id_logement);
+
+CREATE INDEX IF NOT EXISTS idx_tel_emetteur
+    ON tel(id_emetteur);
+
+CREATE INDEX IF NOT EXISTS idx_tel_client
+    ON tel(id_client);

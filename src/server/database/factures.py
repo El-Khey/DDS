@@ -169,6 +169,18 @@ def lire_facture(db, numero):
     }
 
 
+def lire_toutes_factures(db):
+    numeros = db.execute(
+        """
+        SELECT numero
+        FROM facture
+        ORDER BY numero
+        """
+    ).fetchall()
+
+    return [lire_facture(db, ligne["numero"]) for ligne in numeros]
+
+
 def lire_proprietaire(db, identifiant):
     proprietaire = db.execute(
         """

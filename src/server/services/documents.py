@@ -48,3 +48,21 @@ def facture_vers_html(payload):
     xml = etree.fromstring(facture_vers_xml(payload))
     transformation = etree.XSLT(etree.parse(str(XSLT_PATH)))
     return str(transformation(xml))
+
+
+def factures_vers_xml(factures):
+    racine = etree.Element("base_de_donnees")
+
+    for payload in factures:
+        element_facture = etree.SubElement(racine, "facture")
+        _remplir_element(
+            element_facture,
+            payload["facture"],
+        )
+
+    return etree.tostring(
+        racine.getroottree(),
+        xml_declaration=True,
+        encoding="UTF-8",
+        pretty_print=True,
+    )

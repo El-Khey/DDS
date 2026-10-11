@@ -7,9 +7,14 @@ from src.server.database.connexion import get_db
 from src.server.database.factures import (
     lire_facture,
     lire_proprietaire,
+    lire_toutes_factures,
     lister_factures,
 )
-from src.server.services.documents import facture_vers_html, facture_vers_xml
+from src.server.services.documents import (
+    facture_vers_html,
+    facture_vers_xml,
+    factures_vers_xml,
+)
 
 
 SERVER_DIR = Path(__file__).resolve().parents[1]
@@ -75,4 +80,19 @@ def enregistrer_routes_pages(app):
         return render_template(
             "proprietaire.html",
             proprietaire=proprietaire,
+        )
+
+    @app.get("/factures.xml")
+    def exporter_toutes_factures_xml():
+        factures = lire_toutes_factures(get_db())
+        xml = factures_vers_xml(factures)
+
+        return Response(
+            xml,
+            content_type="application/xml; charset=utf-8",
+            headers={
+                "Content-Disposition": (
+                    'attachment; filename="base_de_donnees.xml"'
+                )
+            },
         )

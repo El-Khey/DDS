@@ -10,6 +10,10 @@
     <div class="page-actions">
         <a class="button" href="{{ url_for('nouvelle_facture') }}">Créer une facture</a>
         {% if factures %}
+            <a
+                class="button secondary"
+                href="{{ url_for('exporter_toutes_factures_xml') }}"
+            >Télécharger le XML global</a>
             <button class="danger" type="button" id="delete-all">Supprimer tout</button>
         {% endif %}
     </div>

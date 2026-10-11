@@ -86,6 +86,12 @@ button {
     background: #a02f2f;
 }
 
+.button.secondary {
+    color: #176b5b;
+    border: 1px solid #176b5b;
+    background: white;
+}
+
 .card-actions a {
     color: #176b5b;
 }

@@ -69,6 +69,21 @@ facture passe par la validation et l’insertion utilisées par l’application.
 
 Le serveur vérifie le JSON, les références entre les données et le montant total avant l'insertion dans SQLite.
 
+## XML global et XPath
+
+Le bouton **Télécharger le XML global** génère `base_de_donnees.xml` à partir
+de toutes les factures présentes dans SQLite. Le document possède une unique
+racine `<base_de_donnees>` contenant les éléments `<facture>`.
+
+Quelques requêtes à exécuter dans un testeur XPath :
+
+```xpath
+//facture[client/nom='Dupont']
+//logement[loyer_mensuel > 500]
+//facture[@numero='FAC-2026-P000001']/emetteur/email/text()
+//client/adresse
+```
+
 ## Organisation
 
 ```text
