@@ -4,6 +4,7 @@ def lister_factures(db):
         SELECT
             facture.numero,
             facture.date_facture,
+            emetteur.id AS emetteur_id,
             emetteur.nom AS emetteur_nom,
             emetteur.prenom AS emetteur_prenom,
             client.nom AS client_nom,
@@ -165,4 +166,56 @@ def lire_facture(db, numero):
                 "#text": sum(ligne["montant"] for ligne in lignes),
             },
         }
+    }
+
+
+def lire_proprietaire(db, identifiant):
+    proprietaire = db.execute(
+        """
+        SELECT
+            emetteur.id,
+            emetteur.prenom,
+            emetteur.nom,
+            emetteur.email,
+            adresse.rue,
+            adresse.code_postal,
+            adresse.ville
+        FROM emetteur
+        JOIN adresse
+            ON adresse.id = emetteur.id_adresse
+        WHERE emetteur.id = ?
+        """,
+        (identifiant,),
+    ).fetchone()
+
+    if proprietaire is None:
+        return None
+
+    telephones = db.execute(
+        """
+        SELECT numero, usage_tel
+        FROM tel
+        WHERE id_emetteur = ?
+        ORDER BY id
+        """,
+        (identifiant,),
+    ).fetchall()
+
+    return {
+        "id": proprietaire["id"],
+        "prenom": proprietaire["prenom"],
+        "nom": proprietaire["nom"],
+        "email": proprietaire["email"],
+        "adresse": {
+            "rue": proprietaire["rue"],
+            "code_postal": proprietaire["code_postal"],
+            "ville": proprietaire["ville"],
+        },
+        "telephones": [
+            {
+                "numero": telephone["numero"],
+                "usage": telephone["usage_tel"],
+            }
+            for telephone in telephones
+        ],
     }

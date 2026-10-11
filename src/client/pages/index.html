@@ -23,7 +23,13 @@
             {% for facture in factures %}
                 <article class="card">
                     <h3>Facture {{ facture["numero"] }}</h3>
-                    <p>Émise par {{ facture["emetteur_prenom"] }} {{ facture["emetteur_nom"] }}</p>
+                    <p>
+                        Émise par
+                        <a
+                            class="proprietaire-link"
+                            href="{{ url_for('afficher_proprietaire', identifiant=facture['emetteur_id']) }}"
+                        >{{ facture["emetteur_prenom"] }} {{ facture["emetteur_nom"] }}</a>
+                    </p>
                     <p>Client : {{ facture["client_prenom"] }} {{ facture["client_nom"] }}</p>
                     <p>{{ facture["date_facture"] }} · {{ facture["total"] }} €</p>
                     <div class="card-actions">

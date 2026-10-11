@@ -90,6 +90,11 @@ button {
     color: #176b5b;
 }
 
+.proprietaire-link {
+    color: #176b5b;
+    text-underline-offset: 0.15rem;
+}
+
 .card-actions button {
     margin: 0 0 0 auto;
     padding: 0.45rem 0.7rem;

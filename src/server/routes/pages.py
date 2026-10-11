@@ -4,7 +4,11 @@ from pathlib import Path
 from flask import Response, abort, render_template, url_for
 
 from src.server.database.connexion import get_db
-from src.server.database.factures import lire_facture, lister_factures
+from src.server.database.factures import (
+    lire_facture,
+    lire_proprietaire,
+    lister_factures,
+)
 from src.server.services.documents import facture_vers_html, facture_vers_xml
 
 
@@ -60,3 +64,15 @@ def enregistrer_routes_pages(app):
             encoding="utf-8"
         )
         return Response(contenu, content_type="application/xml; charset=utf-8")
+
+    @app.get("/proprietaires/<int:identifiant>")
+    def afficher_proprietaire(identifiant):
+        proprietaire = lire_proprietaire(get_db(), identifiant)
+
+        if proprietaire is None:
+            abort(404)
+
+        return render_template(
+            "proprietaire.html",
+            proprietaire=proprietaire,
+        )
