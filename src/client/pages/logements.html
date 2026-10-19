@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Offres de logement - Refuges Climatiques{% endblock %}
+
+{% block content %}
+<section class="intro">
+    <p class="eyebrow">Plateforme Refuge Climatique</p>
+    <h1>Offres de logement disponibles</h1>
+    <p>Consultez la liste des hébergements adaptés et enregistrés sur la plateforme.</p>
+    <div class="page-actions">
+        <a class="button" href="{{ url_for('nouvelle_facture') }}">Créer une offre de logement</a>
+    </div>
+</section>
+
+<section>
+    <h2>Logements répertoriés : {{ nombre_logements }}</h2>
+
+    {% if logements %}
+        <div class="cards">
+            {% for logement in logements %}
+                <article class="card">
+                    <h3>{{ logement["type_bien"]|capitalize }} ({{ logement["ville"] }})</h3>
+                    <p>
+                        Proposé par 
+                        <a 
+                            class="proprietaire-link" 
+                            href="{{ url_for('afficher_proprietaire', identifiant=logement['id_emetteur']) }}"
+                        >{{ logement["emetteur_prenom"] }} {{ logement["emetteur_nom"] }}</a>
+                    </p>
+                    <p><strong>Réf :</strong> {{ logement["id_logement"] }}</p>
+                    <p><strong>Loyer :</strong> {{ logement["loyer_mensuel"] }} € / mois (+ {{ logement["charges"] }} € charges)</p>
+                    
+                    {% if logement["temperature_moyenne_ete"] %}
+                        <p style="font-size: 0.9rem; color: #176b5b;">
+                            Temp. été : {{ logement["temperature_moyenne_ete"] }}°C | Altitude : {{ logement["altitude"] }}m
+                        </p>
+                    {% endif %}
+
+                    <div class="card-actions">
+                        <a href="{{ url_for('afficher_proprietaire', identifiant=logement['id_emetteur']) }}">Voir le propriétaire</a>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="empty">Aucun logement n'est encore enregistré dans la base de données.</p>
+    {% endif %}
+</section>
+{% endblock %}

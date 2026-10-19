@@ -45,26 +45,32 @@ def _inserer_personne(db, table, personne):
     return identifiant
 
 
-def _inserer_logements(db, offre):
+def _inserer_logements(db, offre, id_emetteur):
     for logement in offre["logement"]:
         id_adresse = _inserer_adresse(db, logement["adresse"])
+        
+        # Gestion du champ meuble ('oui'/'non' ou booléen vers 1/0 pour SQLite)
+        meuble_val = logement.get("@meuble", "non")
+        meuble_bool = 1 if meuble_val in (True, "oui", "1", 1) else 0
+
         db.execute(
             """
             INSERT INTO logement (
-                id, id_adresse, type_bien, description, loyer_mensuel,
-                charges, depot_garantie, frais_agence, meuble
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                id_logement, id_emetteur, id_adresse, type_bien, description,
+                loyer_mensuel, charges, depot_garantie, frais_agence, meuble
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 logement["@idLogement"],
+                id_emetteur,
                 id_adresse,
-                logement["type_bien"],       
+                logement["type_bien"],
                 logement["description"],
                 logement["loyer_mensuel"],
                 logement["charges"],
                 logement["depot_garantie"],
                 logement.get("frais_agence", 0),
-                logement.get("@meuble", "non"),
+                meuble_bool,
             ),
         )
 
@@ -105,6 +111,7 @@ def _inserer_logements(db, offre):
                     act.get("description"),
                 ),
             )
+
 def _inserer_sejour(db, id_client, id_logement, sejour_data):
     curseur = db.execute(
         """
@@ -144,7 +151,9 @@ def inserer_facture(db, payload):
         with db:
             id_emetteur = _inserer_personne(db, "emetteur", facture["emetteur"])
             id_client = _inserer_personne(db, "client", facture["client"])
-            _inserer_logements(db, facture["offre_logement"])
+            
+            # --> Transmettre id_emetteur ici :
+            _inserer_logements(db, facture["offre_logement"], id_emetteur)
 
             # Récupération de l'id du premier logement pour lier le séjour
             id_logement = facture["offre_logement"]["logement"][0]["@idLogement"]

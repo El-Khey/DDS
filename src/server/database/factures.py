@@ -473,53 +473,36 @@ def lire_toutes_factures(db):
     return [lire_facture(db, ligne["numero"]) for ligne in numeros]
 
 
-def lire_proprietaire(db, identifiant):
-    proprietaire = db.execute(
-        """
-        SELECT
-            emetteur.id,
-            emetteur.prenom,
-            emetteur.nom,
-            emetteur.email,
-            adresse.rue,
-            adresse.code_postal,
-            adresse.ville
-        FROM emetteur
-        JOIN adresse
-            ON adresse.id = emetteur.id_adresse
-        WHERE emetteur.id = ?
-        """,
-        (identifiant,),
-    ).fetchone()
-
-    if proprietaire is None:
-        return None
-
-    telephones = db.execute(
-        """
-        SELECT numero, usage_tel
-        FROM tel
-        WHERE id_emetteur = ?
-        ORDER BY id
-        """,
-        (identifiant,),
-    ).fetchall()
-
-    return {
-        "id": proprietaire["id"],
-        "prenom": proprietaire["prenom"],
-        "nom": proprietaire["nom"],
-        "email": proprietaire["email"],
-        "adresse": {
-            "rue": proprietaire["rue"],
-            "code_postal": proprietaire["code_postal"],
-            "ville": proprietaire["ville"],
-        },
-        "telephones": [
-            {
-                "numero": telephone["numero"],
-                "usage": telephone["usage_tel"],
-            }
-            for telephone in telephones
-        ],
-    }
+def lister_logements(db):
+    """
+    Récupère la liste de tous les logements avec les informations
+    de leur propriétaire (émetteur) et leur environnement.
+    """
+    curseur = db.cursor()
+    curseur.execute("""
+        SELECT 
+            l.id_logement,
+            l.type_bien,
+            l.description,
+            l.meuble,
+            l.loyer_mensuel,
+            l.charges,
+            l.depot_garantie,
+            l.frais_agence,
+            a.rue,
+            a.code_postal,
+            a.ville,
+            e.id AS id_emetteur,
+            e.nom AS emetteur_nom,
+            e.prenom AS emetteur_prenom,
+            env.temperature_moyenne_ete,
+            env.indice_canicule,
+            env.altitude
+        FROM logement l
+        JOIN emetteur e ON l.id_emetteur = e.id
+        JOIN adresse a ON l.id_adresse = a.id
+        LEFT JOIN environnement_logement env ON l.id_logement = env.id_logement
+        ORDER BY l.id_logement DESC
+    """)
+    rows = curseur.fetchall()
+    return [dict(row) for row in rows]

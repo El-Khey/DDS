@@ -21,17 +21,20 @@ CREATE TABLE IF NOT EXISTS client (
     FOREIGN KEY (id_adresse) REFERENCES adresse(id)
 );
 CREATE TABLE IF NOT EXISTS logement (
-    id TEXT PRIMARY KEY,
+    id_logement TEXT PRIMARY KEY,
+    id_emetteur INTEGER NOT NULL,
     id_adresse INTEGER NOT NULL,
-    type_bien TEXT NOT NULL,
-    description TEXT NOT NULL,
+    type_bien VARCHAR(50) NOT NULL,
+    description TEXT,
+    meuble BOOLEAN NOT NULL DEFAULT 0,
     loyer_mensuel REAL NOT NULL CHECK (loyer_mensuel >= 0),
-    charges REAL NOT NULL CHECK (charges >= 0),
-    depot_garantie REAL NOT NULL CHECK (depot_garantie >= 0),
+    charges REAL NOT NULL DEFAULT 0 CHECK (charges >= 0),
+    depot_garantie REAL NOT NULL DEFAULT 0 CHECK (depot_garantie >= 0),
     frais_agence REAL NOT NULL DEFAULT 0 CHECK (frais_agence >= 0),
-    meuble TEXT NOT NULL CHECK (meuble IN ('oui', 'non')),
-    FOREIGN KEY (id_adresse) REFERENCES adresse(id)
+    FOREIGN KEY (id_emetteur) REFERENCES emetteur(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_adresse) REFERENCES adresse(id) ON DELETE CASCADE
 );
+
 CREATE TABLE IF NOT EXISTS sejour (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     id_client INTEGER NOT NULL,
@@ -41,8 +44,9 @@ CREATE TABLE IF NOT EXISTS sejour (
     statut TEXT NOT NULL CHECK (statut IN ('en_attente', 'confirme', 'annule', 'termine')),
     montant_total REAL NOT NULL CHECK (montant_total >= 0),
     FOREIGN KEY (id_client) REFERENCES client(id),
-    FOREIGN KEY (id_logement) REFERENCES logement(id)
+    FOREIGN KEY (id_logement) REFERENCES logement(id_logement)
 );
+
 CREATE TABLE IF NOT EXISTS environnement_logement (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     id_logement TEXT NOT NULL,
@@ -51,8 +55,9 @@ CREATE TABLE IF NOT EXISTS environnement_logement (
     altitude INTEGER,
     services_disponibles TEXT,
     informations_meteo TEXT,
-    FOREIGN KEY (id_logement) REFERENCES logement(id)
+    FOREIGN KEY (id_logement) REFERENCES logement(id_logement) 
 );
+
 CREATE TABLE IF NOT EXISTS activite_proximite (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     id_logement TEXT NOT NULL,
@@ -60,8 +65,9 @@ CREATE TABLE IF NOT EXISTS activite_proximite (
     type_activite TEXT NOT NULL,
     distance_km REAL CHECK (distance_km >= 0),
     description TEXT,
-    FOREIGN KEY (id_logement) REFERENCES logement(id)
+    FOREIGN KEY (id_logement) REFERENCES logement(id_logement)
 );
+
 CREATE TABLE IF NOT EXISTS facture (
     numero TEXT PRIMARY KEY,
     id_emetteur INTEGER NOT NULL,
@@ -79,8 +85,9 @@ CREATE TABLE IF NOT EXISTS ligne_facture (
     libelle TEXT NOT NULL,
     montant REAL NOT NULL CHECK (montant >= 0),
     FOREIGN KEY (numero_facture) REFERENCES facture(numero),
-    FOREIGN KEY (id_logement) REFERENCES logement(id)
+    FOREIGN KEY (id_logement) REFERENCES logement(id_logement)
 );
+
 CREATE TABLE IF NOT EXISTS tel (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     id_emetteur INTEGER,

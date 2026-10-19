@@ -107,7 +107,7 @@ def generer_facture(index, donnees):
             "nom": act["nom"],
             "type_activite": act["type"],
             "distance_km": round(random.uniform(0.5, 8.5), 1),
-            "description": f"Idéal pour se détendre et profiter de la fraîcheur à proximité."
+            "description": "Idéal pour se détendre et profiter de la fraîcheur à proximité."
         })
 
     return {
@@ -177,12 +177,12 @@ def peupler(nombre):
     finally:
         db.close()
 
-    print(f"Base peuplée avec {nombre} factures, séjours et données environnementales aléatoires.")
+    print(f"Base peuplée avec {nombre} factures, logements et émetteurs rattachés.")
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Peuple la base avec des factures et séjours aléatoires."
+        description="Peuple la base avec des factures, émetteurs et séjours aléatoires."
     )
     parser.add_argument("--count", type=entier_positif, default=100)
     arguments = parser.parse_args()

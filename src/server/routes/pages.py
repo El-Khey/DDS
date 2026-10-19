@@ -9,6 +9,7 @@ from src.server.database.factures import (
     lire_proprietaire,
     lire_toutes_factures,
     lister_factures,
+    lister_logements,
 )
 from src.server.services.documents import (
     facture_vers_html,
@@ -95,4 +96,13 @@ def enregistrer_routes_pages(app):
                     'attachment; filename="base_de_donnees.xml"'
                 )
             },
+        )
+    @app.get("/logements")
+    def lister_offres_logement():
+        logements = lister_logements(get_db())
+        nombre_logements = f"{len(logements):,}".replace(",", " ")
+        return render_template(
+            "logements.html",
+            logements=logements,
+            nombre_logements=nombre_logements,
         )
