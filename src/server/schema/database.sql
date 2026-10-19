@@ -4,7 +4,6 @@ CREATE TABLE IF NOT EXISTS adresse (
     code_postal TEXT NOT NULL,
     ville TEXT NOT NULL
 );
-
 CREATE TABLE IF NOT EXISTS emetteur (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     id_adresse INTEGER NOT NULL,
@@ -13,7 +12,6 @@ CREATE TABLE IF NOT EXISTS emetteur (
     email TEXT NOT NULL,
     FOREIGN KEY (id_adresse) REFERENCES adresse(id)
 );
-
 CREATE TABLE IF NOT EXISTS client (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     id_adresse INTEGER NOT NULL,
@@ -22,7 +20,6 @@ CREATE TABLE IF NOT EXISTS client (
     email TEXT NOT NULL,
     FOREIGN KEY (id_adresse) REFERENCES adresse(id)
 );
-
 CREATE TABLE IF NOT EXISTS logement (
     id TEXT PRIMARY KEY,
     id_adresse INTEGER NOT NULL,
@@ -35,16 +32,46 @@ CREATE TABLE IF NOT EXISTS logement (
     meuble TEXT NOT NULL CHECK (meuble IN ('oui', 'non')),
     FOREIGN KEY (id_adresse) REFERENCES adresse(id)
 );
-
+CREATE TABLE IF NOT EXISTS sejour (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_client INTEGER NOT NULL,
+    id_logement TEXT NOT NULL,
+    date_debut TEXT NOT NULL,
+    date_fin TEXT NOT NULL,
+    statut TEXT NOT NULL CHECK (statut IN ('en_attente', 'confirme', 'annule', 'termine')),
+    montant_total REAL NOT NULL CHECK (montant_total >= 0),
+    FOREIGN KEY (id_client) REFERENCES client(id),
+    FOREIGN KEY (id_logement) REFERENCES logement(id)
+);
+CREATE TABLE IF NOT EXISTS environnement_logement (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_logement TEXT NOT NULL,
+    temperature_moyenne_ete REAL,
+    indice_canicule TEXT CHECK (indice_canicule IN ('faible', 'modere', 'eleve')),
+    altitude INTEGER,
+    services_disponibles TEXT,
+    informations_meteo TEXT,
+    FOREIGN KEY (id_logement) REFERENCES logement(id)
+);
+CREATE TABLE IF NOT EXISTS activite_proximite (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_logement TEXT NOT NULL,
+    nom TEXT NOT NULL,
+    type_activite TEXT NOT NULL,
+    distance_km REAL CHECK (distance_km >= 0),
+    description TEXT,
+    FOREIGN KEY (id_logement) REFERENCES logement(id)
+);
 CREATE TABLE IF NOT EXISTS facture (
     numero TEXT PRIMARY KEY,
     id_emetteur INTEGER NOT NULL,
     id_client INTEGER NOT NULL,
+    id_sejour INTEGER,
     date_facture TEXT NOT NULL,
     FOREIGN KEY (id_emetteur) REFERENCES emetteur(id),
-    FOREIGN KEY (id_client) REFERENCES client(id)
+    FOREIGN KEY (id_client) REFERENCES client(id),
+    FOREIGN KEY (id_sejour) REFERENCES sejour(id)
 );
-
 CREATE TABLE IF NOT EXISTS ligne_facture (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     numero_facture TEXT NOT NULL,
@@ -54,7 +81,6 @@ CREATE TABLE IF NOT EXISTS ligne_facture (
     FOREIGN KEY (numero_facture) REFERENCES facture(numero),
     FOREIGN KEY (id_logement) REFERENCES logement(id)
 );
-
 CREATE TABLE IF NOT EXISTS tel (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     id_emetteur INTEGER,
@@ -71,12 +97,19 @@ CREATE TABLE IF NOT EXISTS tel (
 
 CREATE INDEX IF NOT EXISTS idx_ligne_facture_numero
     ON ligne_facture(numero_facture);
-
 CREATE INDEX IF NOT EXISTS idx_ligne_facture_logement
     ON ligne_facture(id_logement);
-
 CREATE INDEX IF NOT EXISTS idx_tel_emetteur
     ON tel(id_emetteur);
-
 CREATE INDEX IF NOT EXISTS idx_tel_client
     ON tel(id_client);
+CREATE INDEX IF NOT EXISTS idx_sejour_client
+    ON sejour(id_client);
+CREATE INDEX IF NOT EXISTS idx_sejour_logement
+    ON sejour(id_logement);
+CREATE INDEX IF NOT EXISTS idx_environnement_logement
+    ON environnement_logement(id_logement);
+CREATE INDEX IF NOT EXISTS idx_activite_logement
+    ON activite_proximite(id_logement);
+CREATE INDEX IF NOT EXISTS idx_facture_sejour
+    ON facture(id_sejour);

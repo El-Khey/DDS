@@ -50,5 +50,23 @@
                 "Maison familiale au calme avec plusieurs espaces ombragés."
             ]
         }
+    ],
+    "indices_canicule": ["faible", "modere", "eleve"],
+    "services_disponibles": [
+        "Points d'eau potable à proximité, zones ombragées, climatisation naturelle",
+        "Ventilation traversante, accès direct à une source fraîche, espace vert",
+        "Isolation thermique renforcée, abris ombragés permanents"
+    ],
+    "informations_meteo": [
+        "Températures estivales en moyenne 5°C plus fraîches qu'en zone urbaine dense.",
+        "Brise de montagne régulière en fin de journée assurant un rafraîchissement.",
+        "Zone abritée des îlots de chaleur urbains, envergure boisée importante."
+    ],
+    "activites_types": [
+        {"nom": "Randonnée en forêt", "type": "randonnée"},
+        {"nom": "Baignade au lac alpin", "type": "baignade"},
+        {"nom": "Visite du patrimoine local", "type": "culture"},
+        {"nom": "Marché de producteurs de pays", "type": "commerce"},
+        {"nom": "Sentier ombragé des cascades", "type": "randonnée"}
     ]
 }

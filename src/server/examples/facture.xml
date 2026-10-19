@@ -1,54 +1,93 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="../xslt/facture.xsl"?>
-<facture numero="FAC-001" date="2026-10-05">
-    <emetteur>
-        <nom>Bernard</nom>
-        <prenom>Camille</prenom>
-        <adresse>
-            <rue>1 place de l'Église</rue>
-            <code_postal>74220</code_postal>
-            <ville>La Clusaz</ville>
-        </adresse>
-        <email>contact@example.fr</email>
-    </emetteur>
-    <client>
-        <nom>Martin</nom>
-        <prenom>Élodie</prenom>
-        <adresse>
-            <rue>10 rue de la République</rue>
-            <code_postal>69002</code_postal>
-            <ville>Lyon</ville>
-        </adresse>
-        <email>elodie.martin@example.fr</email>
-    </client>
-    <offre_logement>
-        <description>Appartement meublé proposé comme refuge temporaire.</description>
-        <type_bien>appartement</type_bien>
-        <logement idLogement="LOG-001" meuble="oui">
-            <adresse>
-                <rue>20 route des Aravis</rue>
-                <code_postal>74220</code_postal>
-                <ville>La Clusaz</ville>
-            </adresse>
-            <loyer_mensuel>600</loyer_mensuel>
-            <charges>50</charges>
-            <depot_garantie>200</depot_garantie>
-            <frais_d_agence>0</frais_d_agence>
-        </logement>
-    </offre_logement>
-    <details_paiement>
-        <ligne_facture refLogement="LOG-001">
-            <libelle>Loyer mensuel</libelle>
-            <montant>600</montant>
-        </ligne_facture>
-        <ligne_facture refLogement="LOG-001">
-            <libelle>Charges</libelle>
-            <montant>50</montant>
-        </ligne_facture>
-        <ligne_facture refLogement="LOG-001">
-            <libelle>Dépôt de garantie</libelle>
-            <montant>200</montant>
-        </ligne_facture>
-    </details_paiement>
-    <total devise="EUR">850</total>
+<?xml version='1.0' encoding='UTF-8'?>
+<?xml-stylesheet type="text/xsl" href="/xslt/facture.xsl"?>
+<facture numero="FAC-2026-P000077" date="2026-09-19">
+  <emetteur>
+    <nom>Garcia</nom>
+    <prenom>Lina</prenom>
+    <adresse>
+      <rue>82 route du Col</rue>
+      <code_postal>69002</code_postal>
+      <ville>Lyon</ville>
+    </adresse>
+    <email>LinaGarcia@gmail.com</email>
+    <tel usage="mobile">0621569428</tel>
+  </emetteur>
+  <client>
+    <nom>Laurent</nom>
+    <prenom>Lucas</prenom>
+    <adresse>
+      <rue>1 cours Jean Jaurès</rue>
+      <code_postal>74220</code_postal>
+      <ville>La Clusaz</ville>
+    </adresse>
+    <email>LucasLaurent@gmail.com</email>
+    <tel usage="mobile">0659280292</tel>
+  </client>
+  <sejour idSejour="SEJ-000077">
+    <date_debut>2026-09-19</date_debut>
+    <date_fin>2026-09-26</date_fin>
+    <statut>confirme</statut>
+    <montant_total>2175.0</montant_total>
+  </sejour>
+  <offre_logement>
+    <description>Appartement ventilé adapté aux périodes de forte chaleur.</description>
+    <type_bien>appartement</type_bien>
+    <logement idLogement="LOG-P000077" meuble="non">
+      <type_bien>appartement</type_bien>
+      <description>Appartement ventilé adapté aux périodes de forte chaleur.</description>
+      <adresse>
+        <rue>46 boulevard des Alpes</rue>
+        <code_postal>73100</code_postal>
+        <ville>Aix-les-Bains</ville>
+      </adresse>
+      <loyer_mensuel>636.0</loyer_mensuel>
+      <charges>62.0</charges>
+      <depot_garantie>1396.0</depot_garantie>
+      <frais_d_agence>81.0</frais_d_agence>
+      <environnement_logement>
+        <temperature_moyenne_ete>20.7</temperature_moyenne_ete>
+        <indice_canicule>eleve</indice_canicule>
+        <altitude>487</altitude>
+        <services_disponibles>Isolation thermique renforcée, abris ombragés permanents</services_disponibles>
+        <informations_meteo>Brise de montagne régulière en fin de journée assurant un rafraîchissement.</informations_meteo>
+      </environnement_logement>
+      <activites_proximite>
+        <nom>Visite du patrimoine local</nom>
+        <type_activite>culture</type_activite>
+        <distance_km>7.2</distance_km>
+        <description>Idéal pour se détendre et profiter de la fraîcheur à proximité.</description>
+      </activites_proximite>
+      <activites_proximite>
+        <nom>Baignade au lac alpin</nom>
+        <type_activite>baignade</type_activite>
+        <distance_km>6.4</distance_km>
+        <description>Idéal pour se détendre et profiter de la fraîcheur à proximité.</description>
+      </activites_proximite>
+      <activites_proximite>
+        <nom>Randonnée en forêt</nom>
+        <type_activite>randonnée</type_activite>
+        <distance_km>4.0</distance_km>
+        <description>Idéal pour se détendre et profiter de la fraîcheur à proximité.</description>
+      </activites_proximite>
+    </logement>
+  </offre_logement>
+  <details_paiement>
+    <ligne_facture refLogement="LOG-P000077">
+      <libelle>Loyer mensuel</libelle>
+      <montant>636.0</montant>
+    </ligne_facture>
+    <ligne_facture refLogement="LOG-P000077">
+      <libelle>Charges</libelle>
+      <montant>62.0</montant>
+    </ligne_facture>
+    <ligne_facture refLogement="LOG-P000077">
+      <libelle>Dépôt de garantie</libelle>
+      <montant>1396.0</montant>
+    </ligne_facture>
+    <ligne_facture refLogement="LOG-P000077">
+      <libelle>Frais d'agence</libelle>
+      <montant>81.0</montant>
+    </ligne_facture>
+  </details_paiement>
+  <total devise="EUR">2175.0</total>
 </facture>

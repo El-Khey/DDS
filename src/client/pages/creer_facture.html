@@ -9,80 +9,211 @@
     <p>Le formulaire produit un JSON conforme à la structure de facture du projet.</p>
 
     <form id="facture-form">
-        <fieldset>
-            <legend>Facture</legend>
-            <label for="numero">Numéro</label>
-            <input id="numero" name="numero" value="{{ numero_facture }}" required>
-            <label for="date">Date</label>
-            <input id="date" name="date" type="date" value="{{ date_facture }}" required>
-        </fieldset>
+        <button type="button" id="btn-aleatoire" class="button secondary" style="margin-bottom: 1rem;">Aléatoire</button>
+        <!-- 1. Facture & Séjour -->
+        <div class="form-row">
+            <fieldset>
+                <legend>Facture</legend>
+                <div class="grid-fields">
+                    <div class="field-group">
+                        <label for="numero">Numéro</label>
+                        <input id="numero" name="numero" value="{{ numero_facture }}" required>
+                    </div>
+                    <div class="field-group">
+                        <label for="date">Date de facturation</label>
+                        <input id="date" name="date" type="date" value="{{ date_facture }}" required>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Séjour (Réfugié Climatique)</legend>
+                <div class="grid-fields">
+                    <div class="field-group">
+                        <label for="id_sejour">Référence Séjour</label>
+                        <input id="id_sejour" name="id_sejour" value="SEJ-000001" required>
+                    </div>
+                    <div class="field-group">
+                        <label for="statut_sejour">Statut du séjour</label>
+                        <select id="statut_sejour" name="statut_sejour" required>
+                            <option value="confirme">Confirmé</option>
+                            <option value="en_attente">En attente</option>
+                            <option value="annule">Annulé</option>
+                            <option value="termine">Terminé</option>
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <label for="date_debut">Date de début</label>
+                        <input id="date_debut" name="date_debut" type="date" value="{{ date_facture }}" required>
+                    </div>
+                    <div class="field-group">
+                        <label for="date_fin">Date de fin</label>
+                        <input id="date_fin" name="date_fin" type="date" required>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+        <!-- 2. Émetteur & Client -->
+        <div class="form-row">
+            <fieldset>
+                <legend>Émetteur</legend>
+                <div class="grid-fields">
+                    <div class="field-group full">
+                        <label for="emetteur_nom">Nom</label>
+                        <input id="emetteur_nom" name="emetteur_nom" required>
+                    </div>
+                    <div class="field-group full">
+                        <label for="emetteur_prenom">Prénom</label>
+                        <input id="emetteur_prenom" name="emetteur_prenom" required>
+                    </div>
+                    <div class="field-group full">
+                        <label for="emetteur_email">Adresse électronique</label>
+                        <input id="emetteur_email" name="emetteur_email" type="email" required>
+                    </div>
+                    <div class="field-group full">
+                        <label for="emetteur_rue">Rue</label>
+                        <input id="emetteur_rue" name="emetteur_rue" required>
+                    </div>
+                    <div class="field-group">
+                        <label for="emetteur_code_postal">Code postal</label>
+                        <input id="emetteur_code_postal" name="emetteur_code_postal" required>
+                    </div>
+                    <div class="field-group">
+                        <label for="emetteur_ville">Ville</label>
+                        <input id="emetteur_ville" name="emetteur_ville" value="La Clusaz" required>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Client (Demandeur)</legend>
+                <div class="grid-fields">
+                    <div class="field-group full">
+                        <label for="client_nom">Nom</label>
+                        <input id="client_nom" name="client_nom" required>
+                    </div>
+                    <div class="field-group full">
+                        <label for="client_prenom">Prénom</label>
+                        <input id="client_prenom" name="client_prenom" required>
+                    </div>
+                    <div class="field-group full">
+                        <label for="client_email">Adresse électronique</label>
+                        <input id="client_email" name="client_email" type="email" required>
+                    </div>
+                    <div class="field-group full">
+                        <label for="client_rue">Rue</label>
+                        <input id="client_rue" name="client_rue" required>
+                    </div>
+                    <div class="field-group">
+                        <label for="client_code_postal">Code postal</label>
+                        <input id="client_code_postal" name="client_code_postal" required>
+                    </div>
+                    <div class="field-group">
+                        <label for="client_ville">Ville</label>
+                        <input id="client_ville" name="client_ville" required>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+        <!-- 3. Offre de logement & Environnement -->
+        <div class="form-row">
+            <fieldset>
+                <legend>Offre de logement</legend>
+                <div class="grid-fields">
+                    <div class="field-group">
+                        <label for="id_logement">Réf. logement</label>
+                        <input id="id_logement" name="id_logement" value="{{ reference_logement }}" required>
+                    </div>
+                    <div class="field-group">
+                        <label for="type_bien">Type de bien</label>
+                        <select id="type_bien" name="type_bien" required>
+                            <option value="chambre">Chambre</option>
+                            <option value="appartement">Appartement</option>
+                            <option value="maison">Maison</option>
+                        </select>
+                    </div>
+                    <div class="field-group full">
+                        <label for="description">Description</label>
+                        <textarea id="description" name="description" rows="2" required></textarea>
+                    </div>
+                    <div class="field-group">
+                        <label for="meuble">Meublé</label>
+                        <select id="meuble" name="meuble" required>
+                            <option value="oui">Oui</option>
+                            <option value="non">Non</option>
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <label for="logement_code_postal">Code postal</label>
+                        <input id="logement_code_postal" name="logement_code_postal" value="74220" required>
+                    </div>
+                    <div class="field-group full">
+                        <label for="logement_rue">Rue</label>
+                        <input id="logement_rue" name="logement_rue" required>
+                    </div>
+                    <div class="field-group full">
+                        <label for="logement_ville">Ville</label>
+                        <input id="logement_ville" name="logement_ville" value="La Clusaz" required>
+                    </div>
+                    <div class="field-group">
+                        <label for="loyer_mensuel">Loyer (€)</label>
+                        <input id="loyer_mensuel" name="loyer_mensuel" type="number" min="0" step="0.01" required>
+                    </div>
+                    <div class="field-group">
+                        <label for="charges">Charges (€)</label>
+                        <input id="charges" name="charges" type="number" min="0" step="0.01" value="0" required>
+                    </div>
+                    <div class="field-group">
+                        <label for="depot_garantie">Garantie (€)</label>
+                        <input id="depot_garantie" name="depot_garantie" type="number" min="0" step="0.01" value="0" required>
+                    </div>
+                    <div class="field-group">
+                        <label for="frais_agence">Frais agence (€)</label>
+                        <input id="frais_agence" name="frais_agence" type="number" min="0" step="0.01" value="0" required>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Environnement & Status Refuge Climatique</legend>
+                <div class="grid-fields">
+                    <div class="field-group">
+                        <label for="temperature_moyenne_ete">Temp. été (°C)</label>
+                        <input id="temperature_moyenne_ete" name="temperature_moyenne_ete" type="number" step="0.1" value="21.5">
+                    </div>
+                    <div class="field-group">
+                        <label for="altitude">Altitude (m)</label>
+                        <input id="altitude" name="altitude" type="number" value="1000">
+                    </div>
+                    <div class="field-group full">
+                        <label for="indice_canicule">Indice canicule</label>
+                        <select id="indice_canicule" name="indice_canicule">
+                            <option value="faible">Faible</option>
+                            <option value="modere">Modéré</option>
+                            <option value="eleve">Élevé</option>
+                        </select>
+                    </div>
+                    <div class="field-group full">
+                        <label for="services_disponibles">Services frais & équipements</label>
+                        <textarea id="services_disponibles" name="services_disponibles" rows="2" placeholder="Points d'eau potable, zones ombragées..."></textarea>
+                    </div>
+                    <div class="field-group full">
+                        <label for="informations_meteo">Infos météo local</label>
+                        <textarea id="informations_meteo" name="informations_meteo" rows="2" placeholder="Vent de montagne rafraîchissant..."></textarea>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
 
         <fieldset>
-            <legend>Émetteur</legend>
-            <label for="emetteur_nom">Nom</label>
-            <input id="emetteur_nom" name="emetteur_nom" required>
-            <label for="emetteur_prenom">Prénom</label>
-            <input id="emetteur_prenom" name="emetteur_prenom" required>
-            <label for="emetteur_email">Adresse électronique</label>
-            <input id="emetteur_email" name="emetteur_email" type="email" required>
-            <label for="emetteur_rue">Rue</label>
-            <input id="emetteur_rue" name="emetteur_rue" required>
-            <label for="emetteur_code_postal">Code postal</label>
-            <input id="emetteur_code_postal" name="emetteur_code_postal" required>
-            <label for="emetteur_ville">Ville</label>
-            <input id="emetteur_ville" name="emetteur_ville" value="La Clusaz" required>
+            <legend>Activités à proximité</legend>
+            <div id="liste-activites"></div>
+            <button type="button" id="btn-ajouter-activite" style="margin-top: 10px;">+ Ajouter une activité</button>
         </fieldset>
 
-        <fieldset>
-            <legend>Client</legend>
-            <label for="client_nom">Nom</label>
-            <input id="client_nom" name="client_nom" required>
-            <label for="client_prenom">Prénom</label>
-            <input id="client_prenom" name="client_prenom" required>
-            <label for="client_email">Adresse électronique</label>
-            <input id="client_email" name="client_email" type="email" required>
-            <label for="client_rue">Rue</label>
-            <input id="client_rue" name="client_rue" required>
-            <label for="client_code_postal">Code postal</label>
-            <input id="client_code_postal" name="client_code_postal" required>
-            <label for="client_ville">Ville</label>
-            <input id="client_ville" name="client_ville" required>
-        </fieldset>
-
-        <fieldset>
-            <legend>Offre de logement</legend>
-            <label for="id_logement">Référence du logement</label>
-            <input id="id_logement" name="id_logement" value="{{ reference_logement }}" required>
-            <label for="type_bien">Type de bien</label>
-            <select id="type_bien" name="type_bien" required>
-                <option value="chambre">Chambre</option>
-                <option value="appartement">Appartement</option>
-                <option value="maison">Maison</option>
-            </select>
-            <label for="description">Description</label>
-            <textarea id="description" name="description" rows="4" required></textarea>
-            <label for="meuble">Meublé</label>
-            <select id="meuble" name="meuble" required>
-                <option value="oui">Oui</option>
-                <option value="non">Non</option>
-            </select>
-            <label for="logement_rue">Rue</label>
-            <input id="logement_rue" name="logement_rue" required>
-            <label for="logement_code_postal">Code postal</label>
-            <input id="logement_code_postal" name="logement_code_postal" value="74220" required>
-            <label for="logement_ville">Ville</label>
-            <input id="logement_ville" name="logement_ville" value="La Clusaz" required>
-            <label for="loyer_mensuel">Loyer mensuel (€)</label>
-            <input id="loyer_mensuel" name="loyer_mensuel" type="number" min="0" step="0.01" required>
-            <label for="charges">Charges (€)</label>
-            <input id="charges" name="charges" type="number" min="0" step="0.01" value="0" required>
-            <label for="depot_garantie">Dépôt de garantie (€)</label>
-            <input id="depot_garantie" name="depot_garantie" type="number" min="0" step="0.01" value="0" required>
-            <label for="frais_d_agence">Frais d'agence (€)</label>
-            <input id="frais_d_agence" name="frais_d_agence" type="number" min="0" step="0.01" value="0" required>
-        </fieldset>
-
-        <button type="submit">Enregistrer la facture</button>
+        <button type="submit" style="margin-top: 20px; width: 100%;">Enregistrer la facture</button>
     </form>
 
     <div id="resultat" class="message" hidden></div>

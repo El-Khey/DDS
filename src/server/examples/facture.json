@@ -1,68 +1,121 @@
 {
-    "facture": {
-        "@numero": "FAC-001",
-        "@date": "2026-10-05",
-        "emetteur": {
-            "nom": "Bernard",
-            "prenom": "Camille",
-            "adresse": {
-                "rue": "1 place de l'Église",
-                "code_postal": "74220",
-                "ville": "La Clusaz"
-            },
-            "email": "contact@example.fr"
-        },
-        "client": {
-            "nom": "Martin",
-            "prenom": "Élodie",
-            "adresse": {
-                "rue": "10 rue de la République",
-                "code_postal": "69002",
-                "ville": "Lyon"
-            },
-            "email": "elodie.martin@example.fr"
-        },
-        "offre_logement": {
-            "description": "Appartement meublé proposé comme refuge temporaire.",
-            "type_bien": "appartement",
-            "logement": [
-                {
-                    "@idLogement": "LOG-001",
-                    "@meuble": "oui",
-                    "adresse": {
-                        "rue": "20 route des Aravis",
-                        "code_postal": "74220",
-                        "ville": "La Clusaz"
-                    },
-                    "loyer_mensuel": 600,
-                    "charges": 50,
-                    "depot_garantie": 200,
-                    "frais_d_agence": 0
-                }
-            ]
-        },
-        "details_paiement": {
-            "ligne_facture": [
-                {
-                    "@refLogement": "LOG-001",
-                    "libelle": "Loyer mensuel",
-                    "montant": 600
-                },
-                {
-                    "@refLogement": "LOG-001",
-                    "libelle": "Charges",
-                    "montant": 50
-                },
-                {
-                    "@refLogement": "LOG-001",
-                    "libelle": "Dépôt de garantie",
-                    "montant": 200
-                }
-            ]
-        },
-        "total": {
-            "@devise": "EUR",
-            "#text": 850
+  "facture": {
+    "@date": "2026-09-19",
+    "@numero": "FAC-2026-P000077",
+    "client": {
+      "adresse": {
+        "code_postal": "74220",
+        "rue": "1 cours Jean Jaur\u00e8s",
+        "ville": "La Clusaz"
+      },
+      "email": "LucasLaurent@gmail.com",
+      "nom": "Laurent",
+      "prenom": "Lucas",
+      "tel": [
+        {
+          "#text": "0659280292",
+          "@usage": "mobile"
         }
+      ]
+    },
+    "details_paiement": {
+      "ligne_facture": [
+        {
+          "@refLogement": "LOG-P000077",
+          "libelle": "Loyer mensuel",
+          "montant": 636.0
+        },
+        {
+          "@refLogement": "LOG-P000077",
+          "libelle": "Charges",
+          "montant": 62.0
+        },
+        {
+          "@refLogement": "LOG-P000077",
+          "libelle": "D\u00e9p\u00f4t de garantie",
+          "montant": 1396.0
+        },
+        {
+          "@refLogement": "LOG-P000077",
+          "libelle": "Frais d'agence",
+          "montant": 81.0
+        }
+      ]
+    },
+    "emetteur": {
+      "adresse": {
+        "code_postal": "69002",
+        "rue": "82 route du Col",
+        "ville": "Lyon"
+      },
+      "email": "LinaGarcia@gmail.com",
+      "nom": "Garcia",
+      "prenom": "Lina",
+      "tel": [
+        {
+          "#text": "0621569428",
+          "@usage": "mobile"
+        }
+      ]
+    },
+    "offre_logement": {
+      "description": "Appartement ventil\u00e9 adapt\u00e9 aux p\u00e9riodes de forte chaleur.",
+      "logement": [
+        {
+          "@idLogement": "LOG-P000077",
+          "@meuble": "non",
+          "activites_proximite": [
+            {
+              "description": "Id\u00e9al pour se d\u00e9tendre et profiter de la fra\u00eecheur \u00e0 proximit\u00e9.",
+              "distance_km": 7.2,
+              "nom": "Visite du patrimoine local",
+              "type_activite": "culture"
+            },
+            {
+              "description": "Id\u00e9al pour se d\u00e9tendre et profiter de la fra\u00eecheur \u00e0 proximit\u00e9.",
+              "distance_km": 6.4,
+              "nom": "Baignade au lac alpin",
+              "type_activite": "baignade"
+            },
+            {
+              "description": "Id\u00e9al pour se d\u00e9tendre et profiter de la fra\u00eecheur \u00e0 proximit\u00e9.",
+              "distance_km": 4.0,
+              "nom": "Randonn\u00e9e en for\u00eat",
+              "type_activite": "randonn\u00e9e"
+            }
+          ],
+          "adresse": {
+            "code_postal": "73100",
+            "rue": "46 boulevard des Alpes",
+            "ville": "Aix-les-Bains"
+          },
+          "charges": 62.0,
+          "depot_garantie": 1396.0,
+          "description": "Appartement ventil\u00e9 adapt\u00e9 aux p\u00e9riodes de forte chaleur.",
+          "environnement_logement": {
+            "altitude": 487,
+            "indice_canicule": "eleve",
+            "informations_meteo": "Brise de montagne r\u00e9guli\u00e8re en fin de journ\u00e9e assurant un rafra\u00eechissement.",
+            "services_disponibles": "Isolation thermique renforc\u00e9e, abris ombrag\u00e9s permanents",
+            "temperature_moyenne_ete": 20.7
+          },
+          "frais_d_agence": 81.0,
+          "loyer_mensuel": 636.0,
+          "type_bien": "appartement"
+        }
+      ],
+      "type_bien": "appartement"
+    },
+    "sejour": {
+      "@idSejour": "SEJ-000077",
+      "date_debut": "2026-09-19",
+      "date_fin": "2026-09-26",
+      "montant_total": 2175.0,
+      "statut": "confirme"
+    },
+    "total": {
+      "#text": 2175.0,
+      "@devise": "EUR"
     }
+  }
 }

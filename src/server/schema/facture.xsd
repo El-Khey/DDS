@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <!-- Types simples réutilisables -->
     <xs:simpleType name="usageTelephone">
         <xs:restriction base="xs:string">
             <xs:enumeration value="personnel"/>
@@ -8,6 +10,24 @@
         </xs:restriction>
     </xs:simpleType>
 
+    <xs:simpleType name="statutSejour">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="en_attente"/>
+            <xs:enumeration value="confirme"/>
+            <xs:enumeration value="annule"/>
+            <xs:enumeration value="termine"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="indiceCaniculeType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="faible"/>
+            <xs:enumeration value="modere"/>
+            <xs:enumeration value="eleve"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- Types complexes réutilisables -->
     <xs:complexType name="adresseType">
         <xs:sequence>
             <xs:element name="rue" type="xs:string"/>
@@ -24,9 +44,11 @@
         </xs:simpleContent>
     </xs:complexType>
 
+    <!-- Structure principale de la facture -->
     <xs:element name="facture">
         <xs:complexType>
             <xs:sequence>
+                <!-- Émetteur -->
                 <xs:element name="emetteur">
                     <xs:complexType>
                         <xs:sequence>
@@ -38,6 +60,8 @@
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
+
+                <!-- Client / Réfugié -->
                 <xs:element name="client">
                     <xs:complexType>
                         <xs:sequence>
@@ -49,6 +73,21 @@
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
+
+                <!-- Informations sur le Séjour -->
+                <xs:element name="sejour">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="date_debut" type="xs:date"/>
+                            <xs:element name="date_fin" type="xs:date"/>
+                            <xs:element name="statut" type="statutSejour"/>
+                            <xs:element name="montant_total" type="xs:decimal"/>
+                        </xs:sequence>
+                        <xs:attribute name="idSejour" type="xs:string" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+
+                <!-- Offre et description du logement -->
                 <xs:element name="offre_logement">
                     <xs:complexType>
                         <xs:sequence>
@@ -62,6 +101,38 @@
                                         <xs:element name="charges" type="xs:decimal"/>
                                         <xs:element name="depot_garantie" type="xs:decimal"/>
                                         <xs:element name="frais_d_agence" type="xs:decimal" minOccurs="0"/>
+                                        
+                                        <!-- Données Refuge Climatique / Environnement -->
+                                        <xs:element name="environnement_logement" minOccurs="0">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="temperature_moyenne_ete" type="xs:decimal" minOccurs="0"/>
+                                                    <xs:element name="indice_canicule" type="indiceCaniculeType" minOccurs="0"/>
+                                                    <xs:element name="altitude" type="xs:integer" minOccurs="0"/>
+                                                    <xs:element name="services_disponibles" type="xs:string" minOccurs="0"/>
+                                                    <xs:element name="informations_meteo" type="xs:string" minOccurs="0"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+
+                                        <!-- Activités à proximité -->
+                                        <xs:element name="activites_proximite" minOccurs="0">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="activite" maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element name="nom" type="xs:string"/>
+                                                                <xs:element name="type_activite" type="xs:string"/>
+                                                                <xs:element name="distance_km" type="xs:decimal" minOccurs="0"/>
+                                                                <xs:element name="description" type="xs:string" minOccurs="0"/>
+                                                            </xs:sequence>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+
                                     </xs:sequence>
                                     <xs:attribute name="idLogement" type="xs:ID" use="required"/>
                                     <xs:attribute name="meuble" use="optional">
@@ -77,6 +148,8 @@
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
+
+                <!-- Détails du paiement / Lignes de facture -->
                 <xs:element name="details_paiement">
                     <xs:complexType>
                         <xs:sequence>
@@ -92,18 +165,22 @@
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
+
+                <!-- Total -->
                 <xs:element name="total">
                     <xs:complexType>
                         <xs:simpleContent>
                             <xs:extension base="xs:decimal">
-                                <xs:attribute name="devise" type="xs:string"/>
+                                <xs:attribute name="devise" type="xs:string" use="optional"/>
                             </xs:extension>
                         </xs:simpleContent>
                     </xs:complexType>
                 </xs:element>
+
             </xs:sequence>
             <xs:attribute name="numero" type="xs:string" use="required"/>
             <xs:attribute name="date" type="xs:date" use="required"/>
         </xs:complexType>
     </xs:element>
+
 </xs:schema>

@@ -58,15 +58,70 @@ def _inserer_logements(db, offre):
             (
                 logement["@idLogement"],
                 id_adresse,
-                offre["type_bien"],
-                offre["description"],
+                logement["type_bien"],       
+                logement["description"],
                 logement["loyer_mensuel"],
                 logement["charges"],
                 logement["depot_garantie"],
-                logement.get("frais_d_agence", 0),
+                logement.get("frais_agence", 0),
                 logement.get("@meuble", "non"),
             ),
         )
+
+        # Insertion de l'environnement / refuge climatique si présent
+        env = logement.get("environnement_logement")
+        if env:
+            db.execute(
+                """
+                INSERT INTO environnement_logement (
+                    id_logement, temperature_moyenne_ete, indice_canicule,
+                    altitude, services_disponibles, informations_meteo
+                ) VALUES (?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    logement["@idLogement"],
+                    env.get("temperature_moyenne_ete"),
+                    env.get("indice_canicule"),
+                    env.get("altitude"),
+                    env.get("services_disponibles"),
+                    env.get("informations_meteo"),
+                ),
+            )
+
+        # Insertion des activités à proximité si présentes
+        activites = logement.get("activites_proximite", [])
+        for act in activites:
+            db.execute(
+                """
+                INSERT INTO activite_proximite (
+                    id_logement, nom, type_activite, distance_km, description
+                ) VALUES (?, ?, ?, ?, ?)
+                """,
+                (
+                    logement["@idLogement"],
+                    act.get("nom"),
+                    act.get("type_activite"),
+                    act.get("distance_km"),
+                    act.get("description"),
+                ),
+            )
+def _inserer_sejour(db, id_client, id_logement, sejour_data):
+    curseur = db.execute(
+        """
+        INSERT INTO sejour (
+            id_client, id_logement, date_debut, date_fin, statut, montant_total
+        ) VALUES (?, ?, ?, ?, ?, ?)
+        """,
+        (
+            id_client,
+            id_logement,
+            sejour_data["date_debut"],
+            sejour_data["date_fin"],
+            sejour_data["statut"],
+            sejour_data["montant_total"],
+        ),
+    )
+    return curseur.lastrowid
 
 
 def _inserer_lignes(db, numero, lignes):
@@ -91,12 +146,16 @@ def inserer_facture(db, payload):
             id_client = _inserer_personne(db, "client", facture["client"])
             _inserer_logements(db, facture["offre_logement"])
 
+            # Récupération de l'id du premier logement pour lier le séjour
+            id_logement = facture["offre_logement"]["logement"][0]["@idLogement"]
+            id_sejour = _inserer_sejour(db, id_client, id_logement, facture["sejour"])
+
             db.execute(
                 """
-                INSERT INTO facture (numero, id_emetteur, id_client, date_facture)
-                VALUES (?, ?, ?, ?)
+                INSERT INTO facture (numero, id_emetteur, id_client, id_sejour, date_facture)
+                VALUES (?, ?, ?, ?, ?)
                 """,
-                (facture["@numero"], id_emetteur, id_client, facture["@date"]),
+                (facture["@numero"], id_emetteur, id_client, id_sejour, facture["@date"]),
             )
             _inserer_lignes(
                 db,

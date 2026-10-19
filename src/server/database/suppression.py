@@ -29,6 +29,7 @@ def supprimer_facture(db, numero):
         SELECT
             facture.id_emetteur,
             facture.id_client,
+            facture.id_sejour,
             emetteur.id_adresse AS adresse_emetteur,
             client.id_adresse AS adresse_client
         FROM facture
@@ -54,8 +55,15 @@ def supprimer_facture(db, numero):
     with db:
         db.execute("DELETE FROM ligne_facture WHERE numero_facture = ?", (numero,))
         db.execute("DELETE FROM facture WHERE numero = ?", (numero,))
+        
+        if facture["id_sejour"]:
+            db.execute("DELETE FROM sejour WHERE id = ?", (facture["id_sejour"],))
 
         for logement in logements:
+            # Nettoyage des tables dépendantes du logement
+            db.execute("DELETE FROM environnement_logement WHERE id_logement = ?", (logement["id"],))
+            db.execute("DELETE FROM activite_proximite WHERE id_logement = ?", (logement["id"],))
+
             suppression = db.execute(
                 """
                 DELETE FROM logement
@@ -92,6 +100,9 @@ def supprimer_toutes_factures(db):
             "tel",
             "ligne_facture",
             "facture",
+            "sejour",
+            "activite_proximite",
+            "environnement_logement",
             "logement",
             "client",
             "emetteur",

@@ -1,6 +1,9 @@
 DROP TABLE IF EXISTS tel;
 DROP TABLE IF EXISTS ligne_facture;
 DROP TABLE IF EXISTS facture;
+DROP TABLE IF EXISTS activite_proximite;
+DROP TABLE IF EXISTS environnement_logement;
+DROP TABLE IF EXISTS sejour;
 DROP TABLE IF EXISTS logement;
 DROP TABLE IF EXISTS client;
 DROP TABLE IF EXISTS emetteur;

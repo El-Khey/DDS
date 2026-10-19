@@ -1,3 +1,6 @@
+import json
+from pathlib import Path
+
 from flask import abort, jsonify, request, url_for
 
 from src.server.database.connexion import get_db
@@ -14,6 +17,8 @@ from src.server.services.ilaas import (
 )
 from src.server.services.validation import FactureInvalide
 
+SERVER_DIR = Path(__file__).resolve().parents[1]
+
 
 def _reponse_creation(numero):
     return {
@@ -28,6 +33,14 @@ def _reponse_creation(numero):
 
 
 def enregistrer_routes_api(app):
+    @app.get("/api/population")
+    def obtenir_population_api():
+        data_path = SERVER_DIR / "data" / "population.json"
+        if not data_path.exists():
+            return jsonify(erreur="Fichier de population introuvable."), 404
+        donnees = json.loads(data_path.read_text(encoding="utf-8"))
+        return jsonify(donnees)
+
     @app.post("/api/factures")
     def creer_facture_api():
         payload = request.get_json(silent=True)
