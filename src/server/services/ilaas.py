@@ -27,13 +27,14 @@ def _retirer_bloc_markdown(texte):
     return "\n".join(lignes).strip()
 
 
+def _lire(dossier, nom):
+    return (SERVER_DIR / dossier / nom).read_text(encoding="utf-8")
+
+
 def _creer_consigne(description):
-    schema = (SERVER_DIR / "schema" / "facture.schema.json").read_text(
-        encoding="utf-8"
-    )
-    exemple = (SERVER_DIR / "examples" / "facture.json").read_text(
-        encoding="utf-8"
-    )
+    schema = _lire("schema", "facture.schema.json")
+    schema_logement = _lire("schema", "logement.schema.json")
+    exemple = _lire("examples", "facture.json")
     return f"""
 Transforme la description suivante en facture JSON.
 
@@ -42,6 +43,10 @@ Retourne uniquement un objet JSON, sans texte ni bloc Markdown.
 Le résultat doit respecter exactement ce JSON Schema :
 
 {schema}
+
+Il fait référence à ce second schéma (logement.schema.json) :
+
+{schema_logement}
 
 Voici un exemple de forme attendue :
 

@@ -1,93 +1,82 @@
 <?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE facture SYSTEM "/schema/facture.dtd">
 <?xml-stylesheet type="text/xsl" href="/xslt/facture.xsl"?>
-<facture numero="FAC-2026-P000077" date="2026-09-19">
+<facture numero="FAC-2026-P000077" date="2026-07-01">
   <emetteur>
-    <nom>Garcia</nom>
-    <prenom>Lina</prenom>
-    <adresse>
-      <rue>82 route du Col</rue>
-      <code_postal>69002</code_postal>
-      <ville>Lyon</ville>
-    </adresse>
-    <email>LinaGarcia@gmail.com</email>
-    <tel usage="mobile">0621569428</tel>
-  </emetteur>
-  <client>
-    <nom>Laurent</nom>
+    <nom>Lefebvre</nom>
     <prenom>Lucas</prenom>
     <adresse>
-      <rue>1 cours Jean Jaurès</rue>
-      <code_postal>74220</code_postal>
-      <ville>La Clusaz</ville>
+      <rue>132 chemin du Bossonnet</rue>
+      <code_postal>1204</code_postal>
+      <ville>Genève</ville>
     </adresse>
-    <email>LucasLaurent@gmail.com</email>
-    <tel usage="mobile">0659280292</tel>
+    <email>lucas.lefebvre@gmail.com</email>
+    <tel usage="mobile">0613775684</tel>
+  </emetteur>
+  <client>
+    <nom>Girard</nom>
+    <prenom>Adam</prenom>
+    <adresse>
+      <rue>143 chemin des Sources</rue>
+      <code_postal>74200</code_postal>
+      <ville>Thonon-les-Bains</ville>
+    </adresse>
+    <email>adam.girard@gmail.com</email>
+    <tel usage="mobile">0676848884</tel>
   </client>
-  <sejour idSejour="SEJ-000077">
-    <date_debut>2026-09-19</date_debut>
-    <date_fin>2026-09-26</date_fin>
+  <sejour idSejour="SEJ-000001">
+    <date_debut>2026-07-01</date_debut>
+    <date_fin>2026-07-04</date_fin>
     <statut>confirme</statut>
-    <montant_total>2175.0</montant_total>
+    <montant_total>2552.0</montant_total>
   </sejour>
   <offre_logement>
-    <description>Appartement ventilé adapté aux périodes de forte chaleur.</description>
-    <type_bien>appartement</type_bien>
-    <logement idLogement="LOG-P000077" meuble="non">
-      <type_bien>appartement</type_bien>
-      <description>Appartement ventilé adapté aux périodes de forte chaleur.</description>
+    <logement idLogement="LOG-P000077" meuble="oui">
+      <type_bien>maison</type_bien>
+      <description>Maison fraîche proposée comme refuge climatique temporaire.</description>
       <adresse>
-        <rue>46 boulevard des Alpes</rue>
-        <code_postal>73100</code_postal>
-        <ville>Aix-les-Bains</ville>
+        <rue>26 boulevard des Alpes</rue>
+        <code_postal>38000</code_postal>
+        <ville>Grenoble</ville>
       </adresse>
-      <loyer_mensuel>636.0</loyer_mensuel>
-      <charges>62.0</charges>
-      <depot_garantie>1396.0</depot_garantie>
-      <frais_d_agence>81.0</frais_d_agence>
+      <loyer_mensuel>910.0</loyer_mensuel>
+      <charges>107.0</charges>
+      <depot_garantie>1305.0</depot_garantie>
+      <frais_agence>230.0</frais_agence>
       <environnement_logement>
-        <temperature_moyenne_ete>20.7</temperature_moyenne_ete>
+        <temperature_moyenne_ete>18.1</temperature_moyenne_ete>
         <indice_canicule>eleve</indice_canicule>
-        <altitude>487</altitude>
+        <altitude>1304</altitude>
         <services_disponibles>Isolation thermique renforcée, abris ombragés permanents</services_disponibles>
         <informations_meteo>Brise de montagne régulière en fin de journée assurant un rafraîchissement.</informations_meteo>
       </environnement_logement>
       <activites_proximite>
-        <nom>Visite du patrimoine local</nom>
-        <type_activite>culture</type_activite>
-        <distance_km>7.2</distance_km>
-        <description>Idéal pour se détendre et profiter de la fraîcheur à proximité.</description>
-      </activites_proximite>
-      <activites_proximite>
-        <nom>Baignade au lac alpin</nom>
-        <type_activite>baignade</type_activite>
-        <distance_km>6.4</distance_km>
-        <description>Idéal pour se détendre et profiter de la fraîcheur à proximité.</description>
-      </activites_proximite>
-      <activites_proximite>
-        <nom>Randonnée en forêt</nom>
-        <type_activite>randonnée</type_activite>
-        <distance_km>4.0</distance_km>
-        <description>Idéal pour se détendre et profiter de la fraîcheur à proximité.</description>
+        <activite>
+          <nom>Marché de producteurs de pays</nom>
+          <type_activite>commerce</type_activite>
+          <distance_km>2.5</distance_km>
+          <description>Idéal pour profiter de la fraîcheur à proximité.</description>
+        </activite>
       </activites_proximite>
     </logement>
   </offre_logement>
   <details_paiement>
     <ligne_facture refLogement="LOG-P000077">
       <libelle>Loyer mensuel</libelle>
-      <montant>636.0</montant>
+      <montant>910.0</montant>
     </ligne_facture>
     <ligne_facture refLogement="LOG-P000077">
       <libelle>Charges</libelle>
-      <montant>62.0</montant>
+      <montant>107.0</montant>
     </ligne_facture>
     <ligne_facture refLogement="LOG-P000077">
       <libelle>Dépôt de garantie</libelle>
-      <montant>1396.0</montant>
+      <montant>1305.0</montant>
     </ligne_facture>
     <ligne_facture refLogement="LOG-P000077">
       <libelle>Frais d'agence</libelle>
-      <montant>81.0</montant>
+      <montant>230.0</montant>
     </ligne_facture>
   </details_paiement>
-  <total devise="EUR">2175.0</total>
+  <total devise="EUR">2552.0</total>
 </facture>

@@ -1,35 +1,67 @@
 from datetime import date, datetime
 from pathlib import Path
 
-from flask import Response, abort, render_template, url_for
+from flask import Response, abort, render_template, send_from_directory, url_for
 
 from src.server.database.connexion import get_db
 from src.server.database.factures import (
     lire_facture,
-    lire_proprietaire,
     lire_toutes_factures,
     lister_factures,
-    lister_logements,
 )
+from src.server.database.logements import (
+    lire_logement,
+    lister_logements,
+    lister_logements_proprietaire,
+)
+from src.server.database.personnes import lire_personne
 from src.server.services.documents import (
     facture_vers_html,
+    facture_vers_texte,
     facture_vers_xml,
     factures_vers_xml,
+)
+from src.server.services.fiche_logement import (
+    logement_vers_html,
+    logement_vers_texte,
 )
 
 
 SERVER_DIR = Path(__file__).resolve().parents[1]
+
+TYPES_SCHEMA = {
+    ".dtd": "application/xml-dtd",
+    ".xsd": "application/xml",
+    ".json": "application/schema+json",
+}
+
+
+def _nombre(valeurs):
+    return f"{len(valeurs):,}".replace(",", " ")
+
+
+def _facture_ou_404(numero):
+    payload = lire_facture(get_db(), numero)
+    if payload is None:
+        abort(404)
+    return payload
+
+
+def _logement_ou_404(id_logement):
+    payload = lire_logement(get_db(), id_logement)
+    if payload is None:
+        abort(404)
+    return payload
 
 
 def enregistrer_routes_pages(app):
     @app.get("/")
     def index():
         factures = lister_factures(get_db())
-        nombre_factures = f"{len(factures):,}".replace(",", " ")
         return render_template(
             "index.html",
             factures=factures,
-            nombre_factures=nombre_factures,
+            nombre_factures=_nombre(factures),
         )
 
     @app.get("/factures/nouvelle")
@@ -39,6 +71,7 @@ def enregistrer_routes_pages(app):
             "creer_facture.html",
             numero_facture=f"FAC-{suffixe}",
             reference_logement=f"LOG-{suffixe}",
+            reference_sejour=f"SEJ-{suffixe}",
             date_facture=date.today().isoformat(),
         )
 
@@ -46,63 +79,82 @@ def enregistrer_routes_pages(app):
     def import_texte():
         return render_template("import_texte.html")
 
+    # Facture d'un séjour : XML, puis HTML et texte par XSLT
+
     @app.get("/factures/<string:numero>.xml")
     def exporter_facture_xml(numero):
-        payload = lire_facture(get_db(), numero)
-        if payload is None:
-            abort(404)
-        xml = facture_vers_xml(payload, url_for("feuille_xslt"))
+        xml = facture_vers_xml(_facture_ou_404(numero), url_for("feuille_xslt"))
         return Response(xml, content_type="application/xml; charset=utf-8")
 
     @app.get("/factures/<string:numero>.html")
     def afficher_facture_html(numero):
-        payload = lire_facture(get_db(), numero)
-        if payload is None:
-            abort(404)
         return Response(
-            facture_vers_html(payload),
+            facture_vers_html(_facture_ou_404(numero)),
             content_type="text/html; charset=utf-8",
+        )
+
+    @app.get("/factures/<string:numero>.txt")
+    def imprimer_facture(numero):
+        return Response(
+            facture_vers_texte(_facture_ou_404(numero)),
+            content_type="text/plain; charset=utf-8",
+        )
+
+    @app.get("/factures.xml")
+    def exporter_toutes_factures_xml():
+        xml = factures_vers_xml(lire_toutes_factures(get_db()))
+        return Response(
+            xml,
+            content_type="application/xml; charset=utf-8",
+            headers={
+                "Content-Disposition": 'attachment; filename="base_de_donnees.xml"'
+            },
         )
 
     @app.get("/xslt/facture.xsl")
     def feuille_xslt():
-        contenu = (SERVER_DIR / "xslt" / "facture.xsl").read_text(
-            encoding="utf-8"
+        return send_from_directory(
+            SERVER_DIR / "xslt", "facture.xsl", mimetype="application/xml"
         )
-        return Response(contenu, content_type="application/xml; charset=utf-8")
+
+    @app.get("/schema/<string:nom>")
+    def fichier_schema(nom):
+        type_mime = TYPES_SCHEMA.get(Path(nom).suffix)
+        if type_mime is None:
+            abort(404)
+        return send_from_directory(SERVER_DIR / "schema", nom, mimetype=type_mime)
+
+    # Logements : fiche HTML et texte produites à partir du JSON
+
+    @app.get("/logements")
+    def lister_offres_logement():
+        logements = lister_logements(get_db())
+        return render_template(
+            "logements.html",
+            logements=logements,
+            nombre_logements=_nombre(logements),
+        )
+
+    @app.get("/logements/<string:id_logement>.html")
+    def afficher_logement_html(id_logement):
+        return logement_vers_html(_logement_ou_404(id_logement))
+
+    @app.get("/logements/<string:id_logement>.txt")
+    def imprimer_logement(id_logement):
+        return Response(
+            logement_vers_texte(_logement_ou_404(id_logement)),
+            content_type="text/plain; charset=utf-8",
+        )
 
     @app.get("/proprietaires/<int:identifiant>")
     def afficher_proprietaire(identifiant):
-        proprietaire = lire_proprietaire(get_db(), identifiant)
-
+        db = get_db()
+        proprietaire = lire_personne(db, "emetteur", identifiant)
         if proprietaire is None:
             abort(404)
 
         return render_template(
             "proprietaire.html",
             proprietaire=proprietaire,
-        )
-
-    @app.get("/factures.xml")
-    def exporter_toutes_factures_xml():
-        factures = lire_toutes_factures(get_db())
-        xml = factures_vers_xml(factures)
-
-        return Response(
-            xml,
-            content_type="application/xml; charset=utf-8",
-            headers={
-                "Content-Disposition": (
-                    'attachment; filename="base_de_donnees.xml"'
-                )
-            },
-        )
-    @app.get("/logements")
-    def lister_offres_logement():
-        logements = lister_logements(get_db())
-        nombre_logements = f"{len(logements):,}".replace(",", " ")
-        return render_template(
-            "logements.html",
-            logements=logements,
-            nombre_logements=nombre_logements,
+            logements=lister_logements_proprietaire(db, identifiant),
         )

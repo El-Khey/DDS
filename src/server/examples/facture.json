@@ -1,20 +1,79 @@
 {
   "facture": {
-    "@date": "2026-09-19",
     "@numero": "FAC-2026-P000077",
-    "client": {
-      "adresse": {
-        "code_postal": "74220",
-        "rue": "1 cours Jean Jaur\u00e8s",
-        "ville": "La Clusaz"
-      },
-      "email": "LucasLaurent@gmail.com",
-      "nom": "Laurent",
+    "@date": "2026-07-01",
+    "emetteur": {
+      "nom": "Lefebvre",
       "prenom": "Lucas",
+      "adresse": {
+        "rue": "132 chemin du Bossonnet",
+        "code_postal": "1204",
+        "ville": "Genève"
+      },
+      "email": "lucas.lefebvre@gmail.com",
       "tel": [
         {
-          "#text": "0659280292",
-          "@usage": "mobile"
+          "@usage": "mobile",
+          "#text": "0613775684"
+        }
+      ]
+    },
+    "client": {
+      "nom": "Girard",
+      "prenom": "Adam",
+      "adresse": {
+        "rue": "143 chemin des Sources",
+        "code_postal": "74200",
+        "ville": "Thonon-les-Bains"
+      },
+      "email": "adam.girard@gmail.com",
+      "tel": [
+        {
+          "@usage": "mobile",
+          "#text": "0676848884"
+        }
+      ]
+    },
+    "sejour": {
+      "@idSejour": "SEJ-000001",
+      "date_debut": "2026-07-01",
+      "date_fin": "2026-07-04",
+      "statut": "confirme",
+      "montant_total": 2552.0
+    },
+    "offre_logement": {
+      "logement": [
+        {
+          "@idLogement": "LOG-P000077",
+          "@meuble": "oui",
+          "type_bien": "maison",
+          "description": "Maison fraîche proposée comme refuge climatique temporaire.",
+          "adresse": {
+            "rue": "26 boulevard des Alpes",
+            "code_postal": "38000",
+            "ville": "Grenoble"
+          },
+          "loyer_mensuel": 910.0,
+          "charges": 107.0,
+          "depot_garantie": 1305.0,
+          "frais_agence": 230.0,
+          "environnement_logement": {
+            "temperature_moyenne_ete": 18.1,
+            "indice_canicule": "eleve",
+            "altitude": 1304,
+            "services_disponibles": "Isolation thermique renforcée, abris ombragés permanents",
+            "informations_meteo": "Brise de montagne régulière en fin de journée assurant un rafraîchissement."
+          },
+          "activites_proximite": {
+            "activite": [
+              {
+                "nom": "Marché de producteurs de pays",
+                "type_activite": "commerce",
+                "distance_km": 2.5,
+                "description": "Idéal pour profiter de la fraîcheur à proximité."
+              }
+            ]
+          }
         }
       ]
     },
@@ -23,99 +82,28 @@
         {
           "@refLogement": "LOG-P000077",
           "libelle": "Loyer mensuel",
-          "montant": 636.0
+          "montant": 910.0
         },
         {
           "@refLogement": "LOG-P000077",
           "libelle": "Charges",
-          "montant": 62.0
+          "montant": 107.0
         },
         {
           "@refLogement": "LOG-P000077",
-          "libelle": "D\u00e9p\u00f4t de garantie",
-          "montant": 1396.0
+          "libelle": "Dépôt de garantie",
+          "montant": 1305.0
         },
         {
           "@refLogement": "LOG-P000077",
           "libelle": "Frais d'agence",
-          "montant": 81.0
+          "montant": 230.0
         }
       ]
-    },
-    "emetteur": {
-      "adresse": {
-        "code_postal": "69002",
-        "rue": "82 route du Col",
-        "ville": "Lyon"
-      },
-      "email": "LinaGarcia@gmail.com",
-      "nom": "Garcia",
-      "prenom": "Lina",
-      "tel": [
-        {
-          "#text": "0621569428",
-          "@usage": "mobile"
-        }
-      ]
-    },
-    "offre_logement": {
-      "description": "Appartement ventil\u00e9 adapt\u00e9 aux p\u00e9riodes de forte chaleur.",
-      "logement": [
-        {
-          "@idLogement": "LOG-P000077",
-          "@meuble": "non",
-          "activites_proximite": [
-            {
-              "description": "Id\u00e9al pour se d\u00e9tendre et profiter de la fra\u00eecheur \u00e0 proximit\u00e9.",
-              "distance_km": 7.2,
-              "nom": "Visite du patrimoine local",
-              "type_activite": "culture"
-            },
-            {
-              "description": "Id\u00e9al pour se d\u00e9tendre et profiter de la fra\u00eecheur \u00e0 proximit\u00e9.",
-              "distance_km": 6.4,
-              "nom": "Baignade au lac alpin",
-              "type_activite": "baignade"
-            },
-            {
-              "description": "Id\u00e9al pour se d\u00e9tendre et profiter de la fra\u00eecheur \u00e0 proximit\u00e9.",
-              "distance_km": 4.0,
-              "nom": "Randonn\u00e9e en for\u00eat",
-              "type_activite": "randonn\u00e9e"
-            }
-          ],
-          "adresse": {
-            "code_postal": "73100",
-            "rue": "46 boulevard des Alpes",
-            "ville": "Aix-les-Bains"
-          },
-          "charges": 62.0,
-          "depot_garantie": 1396.0,
-          "description": "Appartement ventil\u00e9 adapt\u00e9 aux p\u00e9riodes de forte chaleur.",
-          "environnement_logement": {
-            "altitude": 487,
-            "indice_canicule": "eleve",
-            "informations_meteo": "Brise de montagne r\u00e9guli\u00e8re en fin de journ\u00e9e assurant un rafra\u00eechissement.",
-            "services_disponibles": "Isolation thermique renforc\u00e9e, abris ombrag\u00e9s permanents",
-            "temperature_moyenne_ete": 20.7
-          },
-          "frais_d_agence": 81.0,
-          "loyer_mensuel": 636.0,
-          "type_bien": "appartement"
-        }
-      ],
-      "type_bien": "appartement"
-    },
-    "sejour": {
-      "@idSejour": "SEJ-000077",
-      "date_debut": "2026-09-19",
-      "date_fin": "2026-09-26",
-      "montant_total": 2175.0,
-      "statut": "confirme"
     },
     "total": {
-      "#text": 2175.0,
-      "@devise": "EUR"
+      "@devise": "EUR",
+      "#text": 2552.0
     }
   }
 }

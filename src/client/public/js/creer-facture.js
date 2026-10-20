@@ -80,7 +80,32 @@ function construireFacture(data) {
     const totalBrut = lignes.reduce((somme, ligne) => somme + ligne.montant, 0);
     const total = Math.round((totalBrut + Number.EPSILON) * 100) / 100;
 
+    const logement = {
+        "@idLogement": reference,
+        "@meuble": data.get("meuble"),
+        type_bien: data.get("type_bien"),
+        description: data.get("description"),
+        adresse: {
+            rue: data.get("logement_rue"),
+            code_postal: data.get("logement_code_postal"),
+            ville: data.get("logement_ville"),
+        },
+        loyer_mensuel: montants["Loyer mensuel"],
+        charges: montants["Charges"],
+        depot_garantie: montants["Dépôt de garantie"],
+        frais_agence: montants["Frais d'agence"],
+        environnement_logement: {
+            temperature_moyenne_ete: numberValue(data, "temperature_moyenne_ete"),
+            indice_canicule: data.get("indice_canicule"),
+            altitude: numberValue(data, "altitude"),
+            services_disponibles: data.get("services_disponibles"),
+            informations_meteo: data.get("informations_meteo"),
+        },
+    };
     const activites = extraireActivites(form);
+    if (activites.length) {
+        logement.activites_proximite = {activite: activites};
+    }
 
     return {
         facture: {
@@ -114,29 +139,7 @@ function construireFacture(data) {
                 montant_total: total
             },
             offre_logement: {
-                logement: [{
-                    "@idLogement": reference,
-                    "@meuble": data.get("meuble"),
-                    type_bien: data.get("type_bien"),
-                    description: data.get("description"),
-                    adresse: {
-                        rue: data.get("logement_rue"),
-                        code_postal: data.get("logement_code_postal"),
-                        ville: data.get("logement_ville"),
-                    },
-                    loyer_mensuel: montants["Loyer mensuel"],
-                    charges: montants["Charges"],
-                    depot_garantie: montants["Dépôt de garantie"],
-                    frais_agence: montants["Frais d'agence"],
-                    environnement_logement: {
-                        temperature_moyenne_ete: numberValue(data, "temperature_moyenne_ete"),
-                        indice_canicule: data.get("indice_canicule"),
-                        altitude: numberValue(data, "altitude"),
-                        services_disponibles: data.get("services_disponibles"),
-                        informations_meteo: data.get("informations_meteo")
-                    },
-                    activites_proximite: activites
-                }],
+                logement: [logement],
             },
             details_paiement: {
                 ligne_facture: lignes,
@@ -215,6 +218,17 @@ function choixAleatoire(tableau) {
     return tableau[Math.floor(Math.random() * tableau.length)];
 }
 
+function email(prenom, nom) {
+    const sansAccents = (texte) => texte.normalize("NFD").replace(/[^a-z]/gi, "");
+    return `${sansAccents(prenom)}.${sansAccents(nom)}@gmail.com`.toLowerCase();
+}
+
+function dateDansNJours(nombreJours) {
+    const date = new Date();
+    date.setDate(date.getDate() + nombreJours);
+    return date.toISOString().slice(0, 10);
+}
+
 btnAleatoire?.addEventListener("click", async () => {
     try {
         const response = await fetch("/api/population");
@@ -233,7 +247,7 @@ btnAleatoire?.addEventListener("click", async () => {
         // Émetteur
         document.querySelector("#emetteur_nom").value = nomE;
         document.querySelector("#emetteur_prenom").value = prenomE;
-        document.querySelector("#emetteur_email").value = `${prenomE.toLowerCase()}.${nomE.toLowerCase()}@gmail.com`;
+        document.querySelector("#emetteur_email").value = email(prenomE, nomE);
         document.querySelector("#emetteur_rue").value = `${Math.floor(Math.random() * 100) + 1} ${choixAleatoire(donnees.voies)}`;
         document.querySelector("#emetteur_code_postal").value = villeEmetteur.code_postal;
         document.querySelector("#emetteur_ville").value = villeEmetteur.nom;
@@ -241,12 +255,16 @@ btnAleatoire?.addEventListener("click", async () => {
         // Client
         document.querySelector("#client_nom").value = nomC;
         document.querySelector("#client_prenom").value = prenomC;
-        document.querySelector("#client_email").value = `${prenomC.toLowerCase()}.${nomC.toLowerCase()}@gmail.com`;
+        document.querySelector("#client_email").value = email(prenomC, nomC);
         document.querySelector("#client_rue").value = `${Math.floor(Math.random() * 100) + 1} ${choixAleatoire(donnees.voies)}`;
         document.querySelector("#client_code_postal").value = villeClient.code_postal;
         document.querySelector("#client_ville").value = villeClient.nom;
 
-        // Logement & Séjour
+        // Séjour
+        document.querySelector("#date_debut").value = dateDansNJours(0);
+        document.querySelector("#date_fin").value = dateDansNJours(Math.floor(Math.random() * 10) + 2);
+
+        // Logement
         document.querySelector("#type_bien").value = typeLogement.nom;
         document.querySelector("#description").value = choixAleatoire(typeLogement.descriptions);
         document.querySelector("#logement_rue").value = `${Math.floor(Math.random() * 100) + 1} ${choixAleatoire(donnees.voies)}`;

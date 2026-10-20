@@ -1,0 +1,50 @@
+{
+  "logement": {
+    "@idLogement": "LOG-P000077",
+    "@meuble": "oui",
+    "type_bien": "maison",
+    "description": "Maison fraîche proposée comme refuge climatique temporaire.",
+    "adresse": {
+      "rue": "26 boulevard des Alpes",
+      "code_postal": "38000",
+      "ville": "Grenoble"
+    },
+    "loyer_mensuel": 910.0,
+    "charges": 107.0,
+    "depot_garantie": 1305.0,
+    "frais_agence": 230.0,
+    "environnement_logement": {
+      "temperature_moyenne_ete": 18.1,
+      "indice_canicule": "eleve",
+      "altitude": 1304,
+      "services_disponibles": "Isolation thermique renforcée, abris ombragés permanents",
+      "informations_meteo": "Brise de montagne régulière en fin de journée assurant un rafraîchissement."
+    },
+    "activites_proximite": {
+      "activite": [
+        {
+          "nom": "Marché de producteurs de pays",
+          "type_activite": "commerce",
+          "distance_km": 2.5,
+          "description": "Idéal pour profiter de la fraîcheur à proximité."
+        }
+      ]
+    },
+    "proprietaire": {
+      "nom": "Lefebvre",
+      "prenom": "Lucas",
+      "adresse": {
+        "rue": "132 chemin du Bossonnet",
+        "code_postal": "1204",
+        "ville": "Genève"
+      },
+      "email": "lucas.lefebvre@gmail.com",
+      "tel": [
+        {
+          "@usage": "mobile",
+          "#text": "0613775684"
+        }
+      ]
+    }
+  }
+}

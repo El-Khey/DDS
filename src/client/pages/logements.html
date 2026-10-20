@@ -1,15 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Offres de logement - Refuges Climatiques{% endblock %}
+{% block title %}Offres de logement{% endblock %}
 
 {% block content %}
 <section class="intro">
-    <p class="eyebrow">Plateforme Refuge Climatique</p>
-    <h1>Offres de logement disponibles</h1>
-    <p>Consultez la liste des hébergements adaptés et enregistrés sur la plateforme.</p>
-    <div class="page-actions">
-        <a class="button" href="{{ url_for('nouvelle_facture') }}">Créer une offre de logement</a>
-    </div>
+    <p class="eyebrow">Refuge climatique</p>
+    <h1>Offres de logement</h1>
+    <p>Les logements enregistrés sur la plateforme, avec leur fiche de présentation.</p>
 </section>
 
 <section>
@@ -19,31 +16,34 @@
         <div class="cards">
             {% for logement in logements %}
                 <article class="card">
-                    <h3>{{ logement["type_bien"]|capitalize }} ({{ logement["ville"] }})</h3>
+                    <h3>
+                        {{ logement["type_bien"]|capitalize }}
+                        {% if logement["meuble"] %}meublé{% endif %}
+                        à {{ logement["ville"] }}
+                    </h3>
                     <p>
-                        Proposé par 
-                        <a 
-                            class="proprietaire-link" 
+                        Proposé par
+                        <a
+                            class="proprietaire-link"
                             href="{{ url_for('afficher_proprietaire', identifiant=logement['id_emetteur']) }}"
                         >{{ logement["emetteur_prenom"] }} {{ logement["emetteur_nom"] }}</a>
                     </p>
-                    <p><strong>Réf :</strong> {{ logement["id_logement"] }}</p>
-                    <p><strong>Loyer :</strong> {{ logement["loyer_mensuel"] }} € / mois (+ {{ logement["charges"] }} € charges)</p>
-                    
-                    {% if logement["temperature_moyenne_ete"] %}
-                        <p style="font-size: 0.9rem; color: #176b5b;">
-                            Temp. été : {{ logement["temperature_moyenne_ete"] }}°C | Altitude : {{ logement["altitude"] }}m
+                    <p>{{ logement["loyer_mensuel"] }} € / mois + {{ logement["charges"] }} € de charges</p>
+                    {% if logement["temperature_moyenne_ete"] is not none %}
+                        <p class="climat">
+                            {{ logement["temperature_moyenne_ete"] }} °C l'été · {{ logement["altitude"] }} m d'altitude
                         </p>
                     {% endif %}
-
                     <div class="card-actions">
-                        <a href="{{ url_for('afficher_proprietaire', identifiant=logement['id_emetteur']) }}">Voir le propriétaire</a>
+                        <a href="{{ url_for('afficher_logement_html', id_logement=logement['id_logement']) }}">Fiche du logement</a>
+                        <a href="{{ url_for('imprimer_logement', id_logement=logement['id_logement']) }}">Imprimable</a>
+                        <a href="{{ url_for('lire_logement_api', id_logement=logement['id_logement']) }}">JSON</a>
                     </div>
                 </article>
             {% endfor %}
         </div>
     {% else %}
-        <p class="empty">Aucun logement n'est encore enregistré dans la base de données.</p>
+        <p class="empty">Aucun logement n'est encore enregistré.</p>
     {% endif %}
 </section>
 {% endblock %}

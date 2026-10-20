@@ -1,58 +1,51 @@
 {% extends "base.html" %}
 
-{% block title %}
-    {{ proprietaire["prenom"] }} {{ proprietaire["nom"] }}
-{% endblock %}
+{% block title %}{{ proprietaire["prenom"] }} {{ proprietaire["nom"] }}{% endblock %}
 
 {% block content %}
 <article vocab="https://schema.org/" typeof="Person">
-    <p>Propriétaire du logement</p>
+    <p class="eyebrow">Propriétaire</p>
 
     <h1 property="name">
-        <span property="givenName">
-            {{ proprietaire["prenom"] }}
-        </span>
-        <span property="familyName">
-            {{ proprietaire["nom"] }}
-        </span>
+        <span property="givenName">{{ proprietaire["prenom"] }}</span>
+        <span property="familyName">{{ proprietaire["nom"] }}</span>
     </h1>
 
-    <section>
-        <h2>Coordonnées</h2>
+    <div class="fiche-colonnes">
+        <section class="card">
+            <h2>Coordonnées</h2>
+            <p>Email : <span property="email">{{ proprietaire["email"] }}</span></p>
+            {% for telephone in proprietaire.get("tel", []) %}
+                <p>Téléphone : <span property="telephone">{{ telephone["#text"] }}</span></p>
+            {% endfor %}
+        </section>
 
-        <p>
-            Email :
-            <span property="email">
-                {{ proprietaire["email"] }}
-            </span>
-        </p>
-
-        {% for telephone in proprietaire["telephones"] %}
+        <section class="card" property="address" typeof="PostalAddress">
+            <h2>Adresse</h2>
             <p>
-                Téléphone :
-                <span property="telephone">
-                    {{ telephone["numero"] }}
-                </span>
+                <span property="streetAddress">{{ proprietaire["adresse"]["rue"] }}</span><br>
+                <span property="postalCode">{{ proprietaire["adresse"]["code_postal"] }}</span>
+                <span property="addressLocality">{{ proprietaire["adresse"]["ville"] }}</span>
             </p>
-        {% endfor %}
-    </section>
+        </section>
 
-    <section property="address" typeof="PostalAddress">
-        <h2>Adresse</h2>
-
-        <p property="streetAddress">
-            {{ proprietaire["adresse"]["rue"] }}
-        </p>
-
-        <p>
-            <span property="postalCode">
-                {{ proprietaire["adresse"]["code_postal"] }}
-            </span>
-
-            <span property="addressLocality">
-                {{ proprietaire["adresse"]["ville"] }}
-            </span>
-        </p>
-    </section>
+        <section class="card">
+            <h2>Logements proposés</h2>
+            {% if logements %}
+                <ul>
+                    {% for logement in logements %}
+                        <li>
+                            <a href="{{ url_for('afficher_logement_html', id_logement=logement['id_logement']) }}">
+                                {{ logement["type_bien"]|capitalize }} à {{ logement["ville"] }}
+                            </a>
+                            <small>({{ logement["id_logement"] }})</small>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="empty">Aucun logement.</p>
+            {% endif %}
+        </section>
+    </div>
 </article>
 {% endblock %}

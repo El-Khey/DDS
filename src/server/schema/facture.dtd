@@ -1,0 +1,66 @@
+<!-- DTD de la facture reçue par le réfugié climatique -->
+
+<!-- Émetteur et client ont le même contenu -->
+<!ENTITY % personne "nom, prenom, adresse, email, tel*">
+
+<!ELEMENT facture (emetteur, client, sejour, offre_logement, details_paiement, total)>
+<!ATTLIST facture
+    numero CDATA #REQUIRED
+    date   CDATA #REQUIRED>
+
+<!ELEMENT emetteur (%personne;)>
+<!ELEMENT client (%personne;)>
+<!ELEMENT nom (#PCDATA)>
+<!ELEMENT prenom (#PCDATA)>
+<!ELEMENT email (#PCDATA)>
+<!ELEMENT tel (#PCDATA)>
+<!ATTLIST tel usage (personnel | professionnel | mobile) #IMPLIED>
+
+<!ELEMENT adresse (rue, code_postal, ville)>
+<!ELEMENT rue (#PCDATA)>
+<!ELEMENT code_postal (#PCDATA)>
+<!ELEMENT ville (#PCDATA)>
+
+<!ELEMENT sejour (date_debut, date_fin, statut, montant_total)>
+<!ATTLIST sejour idSejour CDATA #REQUIRED>
+<!ELEMENT date_debut (#PCDATA)>
+<!ELEMENT date_fin (#PCDATA)>
+<!ELEMENT statut (#PCDATA)>
+<!ELEMENT montant_total (#PCDATA)>
+
+<!ELEMENT offre_logement (logement+)>
+<!ELEMENT logement (type_bien, description, adresse, loyer_mensuel, charges,
+                    depot_garantie, frais_agence, environnement_logement?,
+                    activites_proximite?)>
+<!ATTLIST logement
+    idLogement ID #REQUIRED
+    meuble (oui | non) #IMPLIED>
+<!ELEMENT type_bien (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT loyer_mensuel (#PCDATA)>
+<!ELEMENT charges (#PCDATA)>
+<!ELEMENT depot_garantie (#PCDATA)>
+<!ELEMENT frais_agence (#PCDATA)>
+
+<!ELEMENT environnement_logement (temperature_moyenne_ete?, indice_canicule?,
+                                  altitude?, services_disponibles?,
+                                  informations_meteo?)>
+<!ELEMENT temperature_moyenne_ete (#PCDATA)>
+<!ELEMENT indice_canicule (#PCDATA)>
+<!ELEMENT altitude (#PCDATA)>
+<!ELEMENT services_disponibles (#PCDATA)>
+<!ELEMENT informations_meteo (#PCDATA)>
+
+<!ELEMENT activites_proximite (activite+)>
+<!ELEMENT activite (nom, type_activite, distance_km?, description?)>
+<!ELEMENT type_activite (#PCDATA)>
+<!ELEMENT distance_km (#PCDATA)>
+
+<!ELEMENT details_paiement (ligne_facture+)>
+<!ELEMENT ligne_facture (libelle, montant)>
+<!ATTLIST ligne_facture refLogement IDREF #REQUIRED>
+<!ELEMENT libelle (#PCDATA)>
+<!ELEMENT montant (#PCDATA)>
+
+<!ELEMENT total (#PCDATA)>
+<!ATTLIST total devise CDATA #IMPLIED>

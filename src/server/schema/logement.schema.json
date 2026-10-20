@@ -1,0 +1,105 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "logement.schema.json",
+    "title": "Logement",
+    "description": "Description d'un logement proposé comme refuge climatique.",
+    "type": "object",
+    "required": ["logement"],
+    "properties": {
+        "logement": {"$ref": "#/definitions/logement"}
+    },
+    "definitions": {
+        "adresse": {
+            "type": "object",
+            "required": ["rue", "code_postal", "ville"],
+            "properties": {
+                "rue": {"type": "string"},
+                "code_postal": {"type": "string", "pattern": "^[0-9]{4,5}$"},
+                "ville": {"type": "string"}
+            }
+        },
+        "telephone": {
+            "type": "object",
+            "required": ["#text"],
+            "properties": {
+                "@usage": {"enum": ["personnel", "professionnel", "mobile"]},
+                "#text": {"type": "string"}
+            }
+        },
+        "personne": {
+            "type": "object",
+            "required": ["nom", "prenom", "adresse", "email"],
+            "properties": {
+                "nom": {"type": "string"},
+                "prenom": {"type": "string"},
+                "adresse": {"$ref": "#/definitions/adresse"},
+                "email": {"type": "string"},
+                "tel": {
+                    "type": "array",
+                    "items": {"$ref": "#/definitions/telephone"}
+                }
+            }
+        },
+        "environnement": {
+            "description": "Informations liées au statut de refuge climatique.",
+            "type": "object",
+            "properties": {
+                "temperature_moyenne_ete": {"type": "number"},
+                "indice_canicule": {"enum": ["faible", "modere", "eleve"]},
+                "altitude": {"type": "integer"},
+                "services_disponibles": {"type": "string"},
+                "informations_meteo": {"type": "string"}
+            }
+        },
+        "activite": {
+            "type": "object",
+            "required": ["nom", "type_activite"],
+            "properties": {
+                "nom": {"type": "string"},
+                "type_activite": {"type": "string"},
+                "distance_km": {"type": "number", "minimum": 0},
+                "description": {"type": "string"}
+            }
+        },
+        "logement": {
+            "type": "object",
+            "required": [
+                "@idLogement",
+                "type_bien",
+                "description",
+                "adresse",
+                "loyer_mensuel",
+                "charges",
+                "depot_garantie",
+                "frais_agence"
+            ],
+            "properties": {
+                "@idLogement": {"type": "string"},
+                "@meuble": {"enum": ["oui", "non"]},
+                "type_bien": {"type": "string"},
+                "description": {"type": "string"},
+                "adresse": {"$ref": "#/definitions/adresse"},
+                "loyer_mensuel": {"type": "number", "minimum": 0},
+                "charges": {"type": "number", "minimum": 0},
+                "depot_garantie": {"type": "number", "minimum": 0},
+                "frais_agence": {"type": "number", "minimum": 0},
+                "environnement_logement": {"$ref": "#/definitions/environnement"},
+                "activites_proximite": {
+                    "type": "object",
+                    "required": ["activite"],
+                    "properties": {
+                        "activite": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {"$ref": "#/definitions/activite"}
+                        }
+                    }
+                },
+                "proprietaire": {
+                    "description": "Présent uniquement dans la fiche de présentation du logement.",
+                    "$ref": "#/definitions/personne"
+                }
+            }
+        }
+    }
+}

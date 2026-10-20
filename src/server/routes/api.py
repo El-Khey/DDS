@@ -6,6 +6,7 @@ from flask import abort, jsonify, request, url_for
 from src.server.database.connexion import get_db
 from src.server.database.factures import lire_facture
 from src.server.database.insertion import FactureExisteDeja, inserer_facture
+from src.server.database.logements import lire_logement
 from src.server.database.suppression import (
     supprimer_facture,
     supprimer_toutes_factures,
@@ -28,6 +29,7 @@ def _reponse_creation(numero):
             "json": url_for("lire_facture_api", numero=numero),
             "xml": url_for("exporter_facture_xml", numero=numero),
             "html": url_for("afficher_facture_html", numero=numero),
+            "texte": url_for("imprimer_facture", numero=numero),
         },
     }
 
@@ -86,6 +88,13 @@ def enregistrer_routes_api(app):
     @app.get("/api/factures/<string:numero>")
     def lire_facture_api(numero):
         payload = lire_facture(get_db(), numero)
+        if payload is None:
+            abort(404)
+        return jsonify(payload)
+
+    @app.get("/api/logements/<string:id_logement>")
+    def lire_logement_api(id_logement):
+        payload = lire_logement(get_db(), id_logement)
         if payload is None:
             abort(404)
         return jsonify(payload)

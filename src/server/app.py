@@ -22,6 +22,8 @@ def create_app(test_config=None):
     app.config.from_mapping(
         DATABASE=BASE_DIR / "instance" / "refuge_climatique.sqlite",
     )
+    # Le JSON garde l'ordre des éléments du XML au lieu d'être trié.
+    app.json.sort_keys = False
     if test_config:
         app.config.update(test_config)
 

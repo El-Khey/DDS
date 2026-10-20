@@ -44,9 +44,9 @@ def supprimer_facture(db, numero):
 
     logements = db.execute(
         """
-        SELECT DISTINCT logement.id, logement.id_adresse
+        SELECT DISTINCT logement.id_logement, logement.id_adresse
         FROM logement
-        JOIN ligne_facture ON ligne_facture.id_logement = logement.id
+        JOIN ligne_facture ON ligne_facture.id_logement = logement.id_logement
         WHERE ligne_facture.numero_facture = ?
         """,
         (numero,),
@@ -55,24 +55,30 @@ def supprimer_facture(db, numero):
     with db:
         db.execute("DELETE FROM ligne_facture WHERE numero_facture = ?", (numero,))
         db.execute("DELETE FROM facture WHERE numero = ?", (numero,))
-        
+
         if facture["id_sejour"]:
             db.execute("DELETE FROM sejour WHERE id = ?", (facture["id_sejour"],))
 
         for logement in logements:
-            # Nettoyage des tables dépendantes du logement
-            db.execute("DELETE FROM environnement_logement WHERE id_logement = ?", (logement["id"],))
-            db.execute("DELETE FROM activite_proximite WHERE id_logement = ?", (logement["id"],))
+            db.execute(
+                "DELETE FROM environnement_logement WHERE id_logement = ?",
+                (logement["id_logement"],),
+            )
+            db.execute(
+                "DELETE FROM activite_proximite WHERE id_logement = ?",
+                (logement["id_logement"],),
+            )
 
             suppression = db.execute(
                 """
                 DELETE FROM logement
-                WHERE id = ?
+                WHERE id_logement = ?
                   AND NOT EXISTS (
-                      SELECT 1 FROM ligne_facture WHERE id_logement = logement.id
+                      SELECT 1 FROM ligne_facture
+                      WHERE id_logement = logement.id_logement
                   )
                 """,
-                (logement["id"],),
+                (logement["id_logement"],),
             )
             if suppression.rowcount:
                 _supprimer_adresse_si_inutilisee(db, logement["id_adresse"])

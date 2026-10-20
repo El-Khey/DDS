@@ -187,20 +187,76 @@ a {
 }
 
 .housing-card {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
+    padding: 1.25rem;
     border: 1px solid #dbe6e2;
     border-radius: 0.7rem;
     background: #f8fbfa;
 }
 
-.housing-card p {
-    margin: 0.25rem 0 0;
+.housing-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.housing-address {
+    margin: 0.6rem 0 0;
+    font-weight: 700;
+}
+
+.housing-ref {
+    margin: 0;
     color: #6a807a;
     font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+.phone {
+    margin: 0.4rem 0 0;
+    color: #55706a;
+    font-size: 0.9rem;
+}
+
+.subsection-label {
+    margin: 1.25rem 0 0.5rem;
+    color: #4d7c71;
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: 0.75rem;
+    margin: 1rem 0 0;
+}
+
+.facts dt {
+    color: #6a807a;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.facts dd {
+    margin: 0.15rem 0 0;
+    font-weight: 700;
+}
+
+.note {
+    margin: 0.5rem 0 0;
+    color: #49645d;
+    font-size: 0.92rem;
+}
+
+.activities {
+    margin: 0;
+    padding-left: 1.2rem;
+    color: #49645d;
+    font-size: 0.92rem;
 }
 
 .payment-section {
@@ -260,7 +316,7 @@ th:last-child,
 
     .invoice-header,
     .section-heading,
-    .housing-card {
+    .housing-main {
         align-items: flex-start;
         flex-direction: column;
     }

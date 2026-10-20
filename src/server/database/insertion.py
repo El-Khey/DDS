@@ -48,10 +48,7 @@ def _inserer_personne(db, table, personne):
 def _inserer_logements(db, offre, id_emetteur):
     for logement in offre["logement"]:
         id_adresse = _inserer_adresse(db, logement["adresse"])
-        
-        # Gestion du champ meuble ('oui'/'non' ou booléen vers 1/0 pour SQLite)
-        meuble_val = logement.get("@meuble", "non")
-        meuble_bool = 1 if meuble_val in (True, "oui", "1", 1) else 0
+        meuble = 1 if logement.get("@meuble") == "oui" else 0
 
         db.execute(
             """
@@ -69,12 +66,11 @@ def _inserer_logements(db, offre, id_emetteur):
                 logement["loyer_mensuel"],
                 logement["charges"],
                 logement["depot_garantie"],
-                logement.get("frais_agence", 0),
-                meuble_bool,
+                logement["frais_agence"],
+                meuble,
             ),
         )
 
-        # Insertion de l'environnement / refuge climatique si présent
         env = logement.get("environnement_logement")
         if env:
             db.execute(
@@ -94,9 +90,8 @@ def _inserer_logements(db, offre, id_emetteur):
                 ),
             )
 
-        # Insertion des activités à proximité si présentes
-        activites = logement.get("activites_proximite", [])
-        for act in activites:
+        activites = logement.get("activites_proximite", {}).get("activite", [])
+        for activite in activites:
             db.execute(
                 """
                 INSERT INTO activite_proximite (
@@ -105,10 +100,10 @@ def _inserer_logements(db, offre, id_emetteur):
                 """,
                 (
                     logement["@idLogement"],
-                    act.get("nom"),
-                    act.get("type_activite"),
-                    act.get("distance_km"),
-                    act.get("description"),
+                    activite["nom"],
+                    activite["type_activite"],
+                    activite.get("distance_km"),
+                    activite.get("description"),
                 ),
             )
 
@@ -151,11 +146,9 @@ def inserer_facture(db, payload):
         with db:
             id_emetteur = _inserer_personne(db, "emetteur", facture["emetteur"])
             id_client = _inserer_personne(db, "client", facture["client"])
-            
-            # --> Transmettre id_emetteur ici :
             _inserer_logements(db, facture["offre_logement"], id_emetteur)
 
-            # Récupération de l'id du premier logement pour lier le séjour
+            # Le séjour est rattaché au premier logement de l'offre.
             id_logement = facture["offre_logement"]["logement"][0]["@idLogement"]
             id_sejour = _inserer_sejour(db, id_client, id_logement, facture["sejour"])
 

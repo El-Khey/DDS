@@ -216,6 +216,48 @@ textarea {
     font: inherit;
 }
 
+.climat {
+    color: #176b5b;
+    font-size: 0.9rem;
+}
+
+.fiche-colonnes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+}
+
+.fiche-colonnes h2 {
+    margin-top: 0;
+    font-size: 1.1rem;
+}
+
+.facts {
+    display: grid;
+    gap: 0.6rem;
+    margin: 0;
+}
+
+.facts dt {
+    color: #5c736d;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.facts dd {
+    margin: 0;
+    font-weight: 700;
+}
+
+.activities {
+    padding-left: 1.2rem;
+}
+
+.activities li + li {
+    margin-top: 0.5rem;
+}
+
 .preview {
     overflow-x: auto;
     max-width: 100%;

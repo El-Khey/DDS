@@ -1,0 +1,9 @@
+<!-- Export complet de la base : une liste de factures -->
+<!ENTITY % facture SYSTEM "facture.dtd">
+%facture;
+
+<!ELEMENT base_de_donnees (facture*)>
+<!-- Le document indique aussi son XSD -->
+<!ATTLIST base_de_donnees
+    xmlns:xsi                     CDATA #IMPLIED
+    xsi:noNamespaceSchemaLocation CDATA #IMPLIED>

@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}{{ logement["type_bien"]|capitalize }} à {{ logement["adresse"]["ville"] }}{% endblock %}
+
+{% block content %}
+{% set adresse = logement["adresse"] %}
+{% set environnement = logement.get("environnement_logement") %}
+{% set activites = logement.get("activites_proximite", {}).get("activite", []) %}
+{% set proprietaire = logement.get("proprietaire") %}
+
+<article class="fiche" vocab="https://schema.org/" typeof="Accommodation">
+    <section class="intro">
+        <p class="eyebrow">Refuge climatique · logement {{ logement["@idLogement"] }}</p>
+        <h1 property="name">
+            {{ logement["type_bien"]|capitalize }}
+            {% if logement.get("@meuble") == "oui" %}meublé{% endif %}
+            à {{ adresse["ville"] }}
+        </h1>
+        <p property="description">{{ logement["description"] }}</p>
+        <div class="page-actions">
+            <a class="button secondary" href="{{ url_for('imprimer_logement', id_logement=logement['@idLogement']) }}">Version imprimable</a>
+            <a class="button secondary" href="{{ url_for('lire_logement_api', id_logement=logement['@idLogement']) }}">Données JSON</a>
+            <a href="{{ url_for('lister_offres_logement') }}">← Tous les logements</a>
+        </div>
+    </section>
+
+    <div class="fiche-colonnes">
+        <section class="card" property="address" typeof="PostalAddress">
+            <h2>Adresse</h2>
+            <p>
+                <span property="streetAddress">{{ adresse["rue"] }}</span><br>
+                <span property="postalCode">{{ adresse["code_postal"] }}</span>
+                <span property="addressLocality">{{ adresse["ville"] }}</span>
+            </p>
+        </section>
+
+        <section class="card">
+            <h2>Tarifs</h2>
+            <dl class="facts">
+                <div><dt>Loyer mensuel</dt><dd>{{ "%.2f"|format(logement["loyer_mensuel"]) }} €</dd></div>
+                <div><dt>Charges</dt><dd>{{ "%.2f"|format(logement["charges"]) }} €</dd></div>
+                <div><dt>Dépôt de garantie</dt><dd>{{ "%.2f"|format(logement["depot_garantie"]) }} €</dd></div>
+                <div><dt>Frais d'agence</dt><dd>{{ "%.2f"|format(logement["frais_agence"]) }} €</dd></div>
+            </dl>
+        </section>
+
+        {% if environnement %}
+            <section class="card">
+                <h2>Environnement</h2>
+                <dl class="facts">
+                    {% if environnement.get("temperature_moyenne_ete") is not none %}
+                        <div><dt>Température moyenne l'été</dt><dd>{{ environnement["temperature_moyenne_ete"] }} °C</dd></div>
+                    {% endif %}
+                    {% if environnement.get("altitude") is not none %}
+                        <div><dt>Altitude</dt><dd>{{ environnement["altitude"] }} m</dd></div>
+                    {% endif %}
+                    {% if environnement.get("indice_canicule") %}
+                        <div>
+                            <dt>Exposition à la canicule</dt>
+                            <dd>{{ {"faible": "faible", "modere": "modérée", "eleve": "élevée"}[environnement["indice_canicule"]] }}</dd>
+                        </div>
+                    {% endif %}
+                </dl>
+                {% if environnement.get("services_disponibles") %}
+                    <p><strong>Services :</strong> {{ environnement["services_disponibles"] }}</p>
+                {% endif %}
+                {% if environnement.get("informations_meteo") %}
+                    <p><strong>Météo :</strong> {{ environnement["informations_meteo"] }}</p>
+                {% endif %}
+            </section>
+        {% endif %}
+
+        {% if activites %}
+            <section class="card">
+                <h2>Activités à proximité</h2>
+                <ul class="activities">
+                    {% for activite in activites %}
+                        <li>
+                            <strong>{{ activite["nom"] }}</strong> · {{ activite["type_activite"] }}
+                            {% if activite.get("distance_km") is not none %}, à {{ activite["distance_km"] }} km{% endif %}
+                            {% if activite.get("description") %}<br><small>{{ activite["description"] }}</small>{% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </section>
+        {% endif %}
+
+        {% if proprietaire %}
+            <section class="card">
+                <h2>Proposé par</h2>
+                <p>
+                    {{ proprietaire["prenom"] }} {{ proprietaire["nom"] }}<br>
+                    <a href="mailto:{{ proprietaire['email'] }}">{{ proprietaire["email"] }}</a>
+                </p>
+                {% for telephone in proprietaire.get("tel", []) %}
+                    <p>Tél. {{ telephone.get("@usage", "") }} : {{ telephone["#text"] }}</p>
+                {% endfor %}
+            </section>
+        {% endif %}
+    </div>
+</article>
+{% endblock %}

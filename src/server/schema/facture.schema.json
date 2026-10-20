@@ -1,10 +1,10 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "FactureSchemaAdapteBDD",
+    "id": "facture.schema.json",
+    "title": "Facture",
+    "description": "Facture reçue par le réfugié climatique pour un séjour dans un logement.",
     "type": "object",
-    "required": [
-        "facture"
-    ],
+    "required": ["facture"],
     "properties": {
         "facture": {
             "type": "object",
@@ -19,299 +19,46 @@
                 "total"
             ],
             "properties": {
-                "@numero": {
-                    "type": "string"
-                },
-                "@date": {
-                    "type": "string"
-                },
-                "emetteur": {
-                    "type": "object",
-                    "required": [
-                        "nom",
-                        "prenom",
-                        "adresse",
-                        "email"
-                    ],
-                    "properties": {
-                        "nom": {
-                            "type": "string"
-                        },
-                        "prenom": {
-                            "type": "string"
-                        },
-                        "adresse": {
-                            "type": "object",
-                            "required": [
-                                "rue",
-                                "code_postal",
-                                "ville"
-                            ],
-                            "properties": {
-                                "rue": {
-                                    "type": "string"
-                                },
-                                "code_postal": {
-                                    "type": "string"
-                                },
-                                "ville": {
-                                    "type": "string"
-                                }
-                            }
-                        },
-                        "email": {
-                            "type": "string"
-                        },
-                        "tel": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "required": [
-                                    "#text"
-                                ],
-                                "properties": {
-                                    "@usage": {
-                                        "type": "string",
-                                        "enum": [
-                                            "personnel",
-                                            "professionnel",
-                                            "mobile"
-                                        ]
-                                    },
-                                    "#text": {
-                                        "type": "string"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "client": {
-                    "type": "object",
-                    "required": [
-                        "nom",
-                        "prenom",
-                        "adresse",
-                        "email"
-                    ],
-                    "properties": {
-                        "nom": {
-                            "type": "string"
-                        },
-                        "prenom": {
-                            "type": "string"
-                        },
-                        "adresse": {
-                            "type": "object",
-                            "required": [
-                                "rue",
-                                "code_postal",
-                                "ville"
-                            ],
-                            "properties": {
-                                "rue": {
-                                    "type": "string"
-                                },
-                                "code_postal": {
-                                    "type": "string"
-                                },
-                                "ville": {
-                                    "type": "string"
-                                }
-                            }
-                        },
-                        "email": {
-                            "type": "string"
-                        },
-                        "tel": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "required": [
-                                    "#text"
-                                ],
-                                "properties": {
-                                    "@usage": {
-                                        "type": "string",
-                                        "enum": [
-                                            "personnel",
-                                            "professionnel",
-                                            "mobile"
-                                        ]
-                                    },
-                                    "#text": {
-                                        "type": "string"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
+                "@numero": {"type": "string"},
+                "@date": {"$ref": "#/definitions/date"},
+                "emetteur": {"$ref": "logement.schema.json#/definitions/personne"},
+                "client": {"$ref": "logement.schema.json#/definitions/personne"},
                 "sejour": {
                     "type": "object",
-                    "required": [
-                        "@idSejour",
-                        "date_debut",
-                        "date_fin",
-                        "statut",
-                        "montant_total"
-                    ],
+                    "required": ["@idSejour", "date_debut", "date_fin", "statut", "montant_total"],
                     "properties": {
-                        "@idSejour": {
-                            "type": "string"
-                        },
-                        "date_debut": {
-                            "type": "string"
-                        },
-                        "date_fin": {
-                            "type": "string"
-                        },
-                        "statut": {
-                            "type": "string",
-                            "enum": [
-                                "en_attente",
-                                "confirme",
-                                "annule",
-                                "termine"
-                            ]
-                        },
-                        "montant_total": {
-                            "type": "number",
-                            "minimum": 0
-                        }
+                        "@idSejour": {"type": "string"},
+                        "date_debut": {"$ref": "#/definitions/date"},
+                        "date_fin": {"$ref": "#/definitions/date"},
+                        "statut": {"enum": ["en_attente", "confirme", "annule", "termine"]},
+                        "montant_total": {"type": "number", "minimum": 0}
                     }
                 },
                 "offre_logement": {
                     "type": "object",
-                    "required": [
-                        "logement"
-                    ],
+                    "required": ["logement"],
                     "properties": {
                         "logement": {
                             "type": "array",
                             "minItems": 1,
-                            "items": {
-                                "type": "object",
-                                "required": [
-                                    "@idLogement",
-                                    "type_bien",
-                                    "description",
-                                    "adresse",
-                                    "loyer_mensuel",
-                                    "charges",
-                                    "depot_garantie",
-                                    "frais_agence"
-                                ],
-                                "properties": {
-                                    "@idLogement": {
-                                        "type": "string"
-                                    },
-                                    "@meuble": {
-                                        "type": "string",
-                                        "enum": [
-                                            "oui",
-                                            "non"
-                                        ]
-                                    },
-                                    "type_bien": {
-                                        "type": "string"
-                                    },
-                                    "description": {
-                                        "type": "string"
-                                    },
-                                    "adresse": {
-                                        "type": "object",
-                                        "required": [
-                                            "rue",
-                                            "code_postal",
-                                            "ville"
-                                        ],
-                                        "properties": {
-                                            "rue": {
-                                                "type": "string"
-                                            },
-                                            "code_postal": {
-                                                "type": "string"
-                                            },
-                                            "ville": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    },
-                                    "loyer_mensuel": {
-                                        "type": "number",
-                                        "minimum": 0
-                                    },
-                                    "charges": {
-                                        "type": "number",
-                                        "minimum": 0
-                                    },
-                                    "depot_garantie": {
-                                        "type": "number",
-                                        "minimum": 0
-                                    },
-                                    "frais_agence": {
-                                        "type": "number",
-                                        "minimum": 0
-                                    },
-                                    "environnement_logement": {
-                                        "type": "object",
-                                        "properties": {
-                                            "temperature_moyenne_ete": { "type": "number" },
-                                            "indice_canicule": { 
-                                                "type": "string",
-                                                "enum": ["faible", "modere", "eleve"]
-                                            },
-                                            "altitude": { "type": "integer" },
-                                            "services_disponibles": { "type": "string" },
-                                            "informations_meteo": { "type": "string" }
-                                        }
-                                    },
-                                    "activites_proximite": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "object",
-                                            "required": ["nom", "type_activite"],
-                                            "properties": {
-                                                "nom": { "type": "string" },
-                                                "type_activite": { "type": "string" },
-                                                "distance_km": { "type": "number", "minimum": 0 },
-                                                "description": { "type": "string" }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            "items": {"$ref": "logement.schema.json#/definitions/logement"}
                         }
                     }
                 },
                 "details_paiement": {
                     "type": "object",
-                    "required": [
-                        "ligne_facture"
-                    ],
+                    "required": ["ligne_facture"],
                     "properties": {
                         "ligne_facture": {
                             "type": "array",
                             "minItems": 1,
                             "items": {
                                 "type": "object",
-                                "required": [
-                                    "@refLogement",
-                                    "libelle",
-                                    "montant"
-                                ],
+                                "required": ["@refLogement", "libelle", "montant"],
                                 "properties": {
-                                    "@refLogement": {
-                                        "type": "string"
-                                    },
-                                    "libelle": {
-                                        "type": "string"
-                                    },
-                                    "montant": {
-                                        "type": "number",
-                                        "minimum": 0
-                                    }
+                                    "@refLogement": {"type": "string"},
+                                    "libelle": {"type": "string"},
+                                    "montant": {"type": "number", "minimum": 0}
                                 }
                             }
                         }
@@ -319,20 +66,20 @@
                 },
                 "total": {
                     "type": "object",
-                    "required": [
-                        "#text"
-                    ],
+                    "required": ["#text"],
                     "properties": {
-                        "@devise": {
-                            "type": "string"
-                        },
-                        "#text": {
-                            "type": "number",
-                            "minimum": 0
-                        }
+                        "@devise": {"type": "string"},
+                        "#text": {"type": "number", "minimum": 0}
                     }
                 }
             }
+        }
+    },
+    "definitions": {
+        "date": {
+            "description": "Date au format AAAA-MM-JJ.",
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
         }
     }
 }

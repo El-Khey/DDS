@@ -5,6 +5,7 @@ l’application.
 
 ```text
 docs/
+├── revue-projet.md            # support de la revue de projet (rendu 4)
 ├── presentation.pptx          # présentation du projet
 ├── presentation-gio.pdf       # autre support de présentation
 ├── choix-de-la-ville.md        # contexte initial autour de La Clusaz
